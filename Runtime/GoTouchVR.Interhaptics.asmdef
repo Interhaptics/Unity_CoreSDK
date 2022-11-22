@@ -1,0 +1,28 @@
+{
+    "name": "GoTouchVR.Interhaptics",
+    "references": [
+        "GUID:9932c99716c61884f9e8d00d748abb20"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS",
+        "PS5",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.xr.oculus",
+            "expression": "1.0.0",
+            "define": "ENABLE_METAQUEST"
+        }
+    ],
+    "noEngineReferences": false
+}

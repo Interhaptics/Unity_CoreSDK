@@ -1,0 +1,17 @@
+{
+    "name": "GoTouchVR.Interhaptics.Editor",
+    "references": [
+        "GUID:33ea0c9c391413945ba4875f5da8847d"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

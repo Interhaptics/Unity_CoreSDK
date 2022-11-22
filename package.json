@@ -1,0 +1,24 @@
+{
+  "name": "com.interhaptics.core_sdk",
+  "version": "1.0.0",
+  "displayName": "Interhaptics Core SDK",
+  "description": "Interhaptics Unity SDK is a unique SDK for haptics with embedded APIs connecting various haptic devices, allowing users to directly render haptic files designed with the Haptic Composer.",
+  "unity": "2019.1",
+  "documentationUrl": "https://www.interhaptics.com/blog/documentation/sdk/",
+  "changelogUrl": "https://www.interhaptics.com/blog/documentation/sdk/changelog/",
+  "licensesUrl": "https://www.interhaptics.com/eula/",
+  "keywords": [
+    "Haptics",
+    "Unity",
+    "Haptic Design",
+    "iOS",
+    "Android",
+    "Meta",
+    "Quest",
+    ".haps"
+  ],
+  "author": {
+    "name": "Interhaptics",
+    "url": "https://www.interhaptics.com"
+  }
+}

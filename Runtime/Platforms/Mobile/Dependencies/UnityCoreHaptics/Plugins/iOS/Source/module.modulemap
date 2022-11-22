@@ -1,0 +1,4 @@
+module UnityFramework_CoreHapticsPrivate {
+    header "UnityCoreHaptics-Bridging-Header.h"
+    export *
+}
