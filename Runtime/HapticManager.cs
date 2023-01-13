@@ -3,8 +3,6 @@
 * ​
 */
 
-using Interhaptics.Platforms.Mobile;
-
 namespace Interhaptics
 {
 
@@ -17,10 +15,10 @@ namespace Interhaptics
             Core.HAR.Init();
             Internal.HapticDeviceManager.DeviceInitLoop();
 #if UNITY_ANDROID && !ENABLE_METAQUEST
-            GenericAndroidHapticAbstraction.Initialize();
-            GenericAndroidHapticAbstraction.m_timer = 30;
-            GenericAndroidHapticAbstraction.pulse = 30;
-            GenericAndroidHapticAbstraction.m_last_time = UnityEngine.Time.fixedTime;
+            Platforms.Mobile.GenericAndroidHapticAbstraction.Initialize();
+            Platforms.Mobile.GenericAndroidHapticAbstraction.m_timer = 30;
+            Platforms.Mobile.GenericAndroidHapticAbstraction.pulse = 30;
+            Platforms.Mobile.GenericAndroidHapticAbstraction.m_last_time = UnityEngine.Time.fixedTime;
 #elif UNITY_IPHONE
             UnityCoreHaptics.UnityCoreHapticsProxy.CreateEngine();
 #endif
@@ -40,6 +38,16 @@ namespace Interhaptics
             //Insert device rendering loop here
             Internal.HapticDeviceManager.DeviceRenderLoop();
 #endif
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            // TODO pause the haptic playback
+        }
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            // TODO pause the haptic playback
         }
 
         protected override void OnOnApplicationQuit()

@@ -178,31 +178,18 @@ namespace Interhaptics.Platforms.Mobile
                     }
                     if (amplitudes != null)
                     {
-                        string s = "";
-                        for (int i = 0; i < amplitudes.Length; i++)
-                        {
-                            s += amplitudes[i] + ";";
-                        }
-
-                        logAuto(funcToStr() + ": Balise 2.2 " + s, logLevel.Warning);
+                        //Case High Capabilities
                         vibrateEffect(pattern, amplitudes, repeat);
                         logAuto(funcToStr() + ": Effect with amplitudes called", logLevel.Info);
+                    }
+                    else
+                    {
+                        //Case Medium capabilities
                     }
                 }
                 else
                 {
-                    float a = PulseFromBuffer(amplitudes);
-                    m_timer += UnityEngine.Time.fixedTime - m_last_time;
-                    m_last_time = UnityEngine.Time.fixedTime;
-
-                    if (m_timer > pulse / 1000.0f)
-                    {
-                        m_timer = 0;
-                        if (a > 0.5f)
-                            Vibrate((long)(pulse));
-                        else
-                            Cancel();
-                    }
+                    //Case low capabilities
                 }
             }
         }
@@ -358,16 +345,6 @@ namespace Interhaptics.Platforms.Mobile
 
         private static void vibrateEffect(long[] pattern, int[] amplitudes, int repeat)
         {
-            string s = "";
-            for (int i = 0; i < amplitudes.Length; i++)
-            {
-                if (amplitudes[i] != 0)
-                {
-                    s += amplitudes[i] + ";";
-                }
-            }
-
-            logAuto(": Balise 3.1 " + s, logLevel.Warning);
             using (UnityEngine.AndroidJavaObject effect = createEffect_Waveform(pattern, amplitudes, repeat))
             {
                 vibrator.Call("vibrate", effect);
@@ -413,7 +390,6 @@ namespace Interhaptics.Platforms.Mobile
         /// </summary>
         private static UnityEngine.AndroidJavaObject createEffect_Waveform(long[] timings, int repeat)
         {
-            logAuto("Balise 3.9", logLevel.Warning);
             return vibrationEffectClass.CallStatic<UnityEngine.AndroidJavaObject>("createWaveform", timings, repeat);
         }
         #endregion

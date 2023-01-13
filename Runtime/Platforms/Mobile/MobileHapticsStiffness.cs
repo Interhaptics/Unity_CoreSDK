@@ -51,7 +51,7 @@ namespace Interhaptics.Platforms.Mobile
                 return;
             }
 
-            float stiffnessAmplitude = Core.HAR.GetStiffnessAmp(_currentMaterial.Value.materialInfos.id, distance);
+            float stiffnessAmplitude = (float)Core.HAR.GetStiffnessAmp(_currentMaterial.Value.materialInfos.id, distance);
 
             #if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
             Debug.Log($"{this.GetType().Name}: (<br>Material =</br> {_currentMaterial.Value.materialInfos.material.name} | <br>Value =</br> {distance} | <br>Amplitude =</br> {stiffnessAmplitude}）", this);

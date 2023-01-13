@@ -149,12 +149,10 @@ namespace Interhaptics.Platforms.Mobile
         {
             //Vibration informations loading
             hmInfos.vibrationLength = (float)HAR.GetVibrationLength(id);
-            Debug.LogWarning("Vib Length : " + HAR.GetVibrationLength(id));
+            Debug.LogWarning("Vib Length : " + (float)HAR.GetVibrationLength(id));
 
             //Texture informations loading
-            hmInfos.textureLength = HAR.GetTextureLength(id);
-
-            //Debug.LogWarning("Size pattern = "+ (Mathf.RoundToInt(hmInfos.vibrationLength / PATTERN_STEP) + 1) * 2); //ANMA DEBUG
+            hmInfos.textureLength = (float)HAR.GetTextureLength(id);
 
             #if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IOS)
             //Vibration
@@ -169,7 +167,7 @@ namespace Interhaptics.Platforms.Mobile
                 hmInfos.pattern = new float[(Mathf.RoundToInt(hmInfos.vibrationLength / PATTERN_STEP) + 1)];
                 hmInfos.FreqPattern = new float[(Mathf.RoundToInt(hmInfos.vibrationLength / PATTERN_STEP) + 1)];
 
-                int TransVibSize = HAR.GetNumberOfTransient(id, 2,0.0,hmInfos.vibrationLength);
+                int TransVibSize = (float)HAR.GetNumberOfTransient(id, 2,0.0,hmInfos.vibrationLength);
 
                 hmInfos.TransientVibTimer = new float[TransVibSize];
                 hmInfos.TransientVibGain = new float[TransVibSize];
@@ -177,7 +175,7 @@ namespace Interhaptics.Platforms.Mobile
                 double[] tvt = new double[TransVibSize];
                 double[] tvg = new double[TransVibSize];
 
-                HAR.GetTransientsData(id,2,0.0,(double)hmInfos.vibrationLength,TransVibSize,tvt,tvg,new double[TransVibSize],new int[TransVibSize]);
+                (float)HAR.GetTransientsData(id,2,0.0,(double)hmInfos.vibrationLength,TransVibSize,tvt,tvg,new double[TransVibSize],new int[TransVibSize]);
                 if(hmInfos.vibrationLength > 0)
                 {
                     UnityEngine.Debug.Log("Get trans data from 0 to "+hmInfos.vibrationLength+" : "+TransVibSize+" found");
@@ -194,15 +192,15 @@ namespace Interhaptics.Platforms.Mobile
                 for (int i = 0; i < hmInfos.pattern.Length; i++)
                 {
                     #if UNITY_ANDROID
-                    int v = Mathf.RoundToInt(HAR.GetVibrationAmp(id, ((i - 1) / 2) * PATTERN_STEP) * 255);
+                    int v = Mathf.RoundToInt((float)HAR.GetVibrationAmp(id, ((i - 1) / 2) * PATTERN_STEP) * 255);
                     hmInfos.pattern[i] = v;
                     hmInfos.timePattern[i] = 0;
                     i += 1;
                     hmInfos.pattern[i] = v;
                     hmInfos.timePattern[i] = Mathf.RoundToInt(PATTERN_STEP * 1000);
                     #elif UNITY_IOS
-                    hmInfos.pattern[i] = HAR.GetVibrationAmp(id, i * PATTERN_STEP);
-                    hmInfos.FreqPattern[i] = HAR.GetVibrationFreq(id, i * PATTERN_STEP);
+                    hmInfos.pattern[i] = (float)HAR.GetVibrationAmp(id, i * PATTERN_STEP);
+                    hmInfos.FreqPattern[i] = (float)HAR.GetVibrationFreq(id, i * PATTERN_STEP);
                     #endif
                 }
             }
@@ -221,12 +219,12 @@ namespace Interhaptics.Platforms.Mobile
                 for (int i = 0; i < hmInfos.globalPattern.Length; i++)
                 {
                     #if UNITY_ANDROID
-                    int v = Mathf.RoundToInt(HAR.GetTextureAmp(id, ((i - 1) / 2) * PATTERN_STEP) * 255);
+                    int v = Mathf.RoundToInt((float)HAR.GetTextureAmp(id, ((i - 1) / 2) * PATTERN_STEP) * 255);
                     hmInfos.globalPattern[i] = v;
                     hmInfos.globalPattern[++i] = v;
                     #elif UNITY_IOS
-                    hmInfos.globalPattern[i] = HAR.GetTextureAmp(id, i * PATTERN_STEP);
-                    hmInfos.globalFreqPattern[i] = HAR.GetTextureFreq(id, i * PATTERN_STEP);
+                    hmInfos.globalPattern[i] = (float)HAR.GetTextureAmp(id, i * PATTERN_STEP);
+                    hmInfos.globalFreqPattern[i] = (float)HAR.GetTextureFreq(id, i * PATTERN_STEP);
                     #endif
                 }
             }
@@ -250,7 +248,7 @@ namespace Interhaptics.Platforms.Mobile
             {
                 int id = HAR.AddHM(hapticsMaterial);
                 Debug.LogWarning("id = " + id);
-                Debug.LogWarning("Vib Length :" + HAR.GetVibrationLength(id));
+                Debug.LogWarning("Vib Length :" + (float)HAR.GetVibrationLength(id));
 
                 if (id == -1)
                 {
@@ -294,24 +292,6 @@ namespace Interhaptics.Platforms.Mobile
                 materialInfos = _loadedMaterials[index];
                 success = true;
             }
-            //TODO - check if necessary
-            //------------------------------------------------------------------ ANMA - ANMA
-            /*
-            string nname = "";
-            int indexx = materialInfos.material.text.IndexOf("m_name") + 8;
-            if (materialInfos.material.text[indexx].Equals('"'))
-            {
-                indexx++;
-                while (!materialInfos.material.text[indexx].Equals('"'))
-                {
-                    nname += materialInfos.material.text[indexx];
-                    indexx++;
-                }
-            }
-            //Debug.Log("Checkpoint 4 : " + nname);
-
-            */
-            ////-----------------------------------------------------------------
 
             return success;
         }

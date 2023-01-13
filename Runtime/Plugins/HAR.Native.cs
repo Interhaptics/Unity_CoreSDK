@@ -28,21 +28,21 @@ namespace Interhaptics.Core
         private static extern bool UpdateHM(int _id, string _content);
 
         [DllImport(DLL_NAME)]
-        public static extern float GetVibrationAmp(int _id, float _step, int _mode = 0);
+        public static extern double GetVibrationAmp(int _id, double _step, int _mode = 0);
         [DllImport(DLL_NAME)]
-        public static extern float GetVibrationFreq(int _id, float _step);
+        public static extern double GetVibrationFreq(int _id, double _step);
         [DllImport(DLL_NAME)]
         public static extern float GetVibrationLength(int _id);
         [DllImport(DLL_NAME)]
-        public static extern float GetTextureAmp(int _id, float _step, int _mode = 0);
+        public static extern double GetTextureAmp(int _id, double _step, int _mode = 0);
         [DllImport(DLL_NAME)]
-        public static extern float GetTextureFreq(int _id, float _step);
+        public static extern double GetTextureFreq(int _id, double _step);
         [DllImport(DLL_NAME)]
-        public static extern float GetTextureLength(int _id);
+        public static extern double GetTextureLength(int _id);
         [DllImport(DLL_NAME)]
-        public static extern float GetStiffnessAmp(int _id, float _step);
+        public static extern double GetStiffnessAmp(int _id, double _step);
         [DllImport(DLL_NAME)]
-        public static extern float GetStiffnessFreq(int _id, float _step);
+        public static extern double GetStiffnessFreq(int _id, double _step);
         [DllImport(DLL_NAME)]
         public static extern bool GetTransientsData(int _hMaterialId, int _perceptionIndex, double _startingTime, double _length, int _tabSize, double[] _timer, double[] _volume, double[] _frequency, int[] _type);
         [DllImport(DLL_NAME)]
@@ -53,7 +53,8 @@ namespace Interhaptics.Core
         [DllImport(DLL_NAME)]
         public static extern void GetOutputBuffer(double[] _outputBuffer, int _bufferSize, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType);
         [DllImport(DLL_NAME)]
-
+        public static extern double GetOutputBufferValue(int _index, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType);
+        [DllImport(DLL_NAME)]
         public static extern void AddBodyPart(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension, double _sampleRate, bool _hd, bool _splitFrequency, bool _splitTransient);
         [DllImport(DLL_NAME)]
         public static extern void DeleteBodyPart(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID);

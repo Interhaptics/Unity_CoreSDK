@@ -1,3 +1,12 @@
+# 13th of January 2023
+# v1.0.4
+
++ Added missing HAR entry points
++ Remove unused code
++ Fix debug dependencies
+
+---
+
 # 1st of December 2022
 # v1.0.2
 
