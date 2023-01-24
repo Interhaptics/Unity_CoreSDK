@@ -1,3 +1,15 @@
+# 24th of January 2023
+# v1.0.5
+
++ Added VerboseMode and Play/Stop Parameters for Trigger and Collision (on by default); exposed HapticMaterialId
++ Update HapticSource and SpatialHapticSource with custom editors
++ HSExtension moved to SpatialHapticSource to play on Trigger and Collision (fixed to changed Trigger to false)
++ Correct location for Editor scripts
++ Extracted VibrationControl method to mitigate residual haptics
++ Fixed haptics backend linking issue
+
+---
+
 # 13th of January 2023
 # v1.0.4
 

@@ -4,7 +4,6 @@
 */
 
 using UnityEngine;
-
 using System.Collections.Generic;
 
 
@@ -17,7 +16,6 @@ namespace Interhaptics.Internal
 
         [SerializeField]
         private HapticMaterial hapticMaterial;
-        private int hapticMaterialId;
 
         [SerializeField]
         private float vibrationOffset;
@@ -26,29 +24,34 @@ namespace Interhaptics.Internal
         [SerializeField]
         private float stiffnessOffset;
 
-        void Awake()
+        public int HapticMaterialId
         {
-            hapticMaterialId = Core.HAR.AddHM(hapticMaterial);
+            get; private set;
         }
 
-        public void Play()
+        protected virtual void Awake()
         {
-            Core.HAR.PlayEvent(hapticMaterialId, -Time.realtimeSinceStartup + vibrationOffset, textureOffset, stiffnessOffset);
+            HapticMaterialId = Core.HAR.AddHM(hapticMaterial);
         }
 
-        public void Stop()
+        public virtual void Play()
         {
-            Core.HAR.StopEvent(hapticMaterialId);
+            Core.HAR.PlayEvent(HapticMaterialId, -Time.realtimeSinceStartup + vibrationOffset, textureOffset, stiffnessOffset);
+        }
+
+        public virtual void Stop()
+        {
+            Core.HAR.StopEvent(HapticMaterialId);
         }
 
         public void AddTarget(List<HapticBodyMapping.CommandData> Target)
         {
-            Core.HAR.AddTargetToEvent(hapticMaterialId, Target);
+            Core.HAR.AddTargetToEvent(HapticMaterialId, Target);
         }
 
         public void RemoveTarget(List<HapticBodyMapping.CommandData> Target)
         {
-            Core.HAR.RemoveTargetFromEvent(hapticMaterialId, Target);
+            Core.HAR.RemoveTargetFromEvent(HapticMaterialId, Target);
         }
 
     }

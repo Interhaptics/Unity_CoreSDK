@@ -94,6 +94,7 @@ namespace Interhaptics.Platforms.Dummy
             {
                 outputBuffer = new double[size];
                 Core.HAR.GetOutputBuffer(outputBuffer, size, Perception.Vibration, BodyPartID.Bp_Left_palm, 0, 0, 0, BufferDataType.PCM);
+
                 halfBuffer = new double[size/* / 2*/];
                 System.Array.Copy(outputBuffer, 0, halfBuffer, 0, halfBuffer.Length);
                 WriteToFile(halfBuffer);
@@ -110,7 +111,7 @@ namespace Interhaptics.Platforms.Dummy
             }
 #endif
         }
-#endregion
+        #endregion
 
 
         private StreamWriter file;
