@@ -26,7 +26,9 @@ namespace Interhaptics
 
         override protected void OnAwake()
         {
+#if !UNITY_EDITOR_OSX
             Init();
+#endif
         }
 
         private void LateUpdate()
@@ -52,10 +54,12 @@ namespace Interhaptics
 
         protected override void OnOnApplicationQuit()
         {
+#if !UNITY_EDITOR_OSX
             Internal.HapticDeviceManager.DeviceCleanLoop();
             Core.HAR.ClearActiveEvents();
             Core.HAR.ClearInactiveEvents();
             Core.HAR.Quit();
+#endif
         }
 
     }

@@ -131,10 +131,12 @@ namespace Interhaptics.Platforms.Mobile
         #region Life Cycle
         protected virtual void Awake()
         {
+            #if !UNITY_EDITOR_OSX
             for (int i = 0; i < materials.Length; i++)
             {
                 this.AddMaterial(materials[i]);
             }
+            #endif
         }
         #endregion
 
@@ -149,7 +151,6 @@ namespace Interhaptics.Platforms.Mobile
         {
             //Vibration informations loading
             hmInfos.vibrationLength = (float)HAR.GetVibrationLength(id);
-            Debug.LogWarning("Vib Length : " + (float)HAR.GetVibrationLength(id));
 
             //Texture informations loading
             hmInfos.textureLength = (float)HAR.GetTextureLength(id);
@@ -159,7 +160,6 @@ namespace Interhaptics.Platforms.Mobile
             if(hmInfos.vibrationLength >= 0)
             {
                 #if UNITY_ANDROID
-                Debug.LogWarning("Size : "+((Mathf.RoundToInt(hmInfos.vibrationLength / PATTERN_STEP) + 1) * 2));
                 hmInfos.pattern = new int[(Mathf.RoundToInt(hmInfos.vibrationLength / PATTERN_STEP) + 1) * 2];
 
                 hmInfos.timePattern = new long[hmInfos.pattern.Length];
@@ -167,7 +167,7 @@ namespace Interhaptics.Platforms.Mobile
                 hmInfos.pattern = new float[(Mathf.RoundToInt(hmInfos.vibrationLength / PATTERN_STEP) + 1)];
                 hmInfos.FreqPattern = new float[(Mathf.RoundToInt(hmInfos.vibrationLength / PATTERN_STEP) + 1)];
 
-                int TransVibSize = (float)HAR.GetNumberOfTransient(id, 2,0.0,hmInfos.vibrationLength);
+                int TransVibSize = HAR.GetNumberOfTransient(id, 2,0.0,hmInfos.vibrationLength);
 
                 hmInfos.TransientVibTimer = new float[TransVibSize];
                 hmInfos.TransientVibGain = new float[TransVibSize];
@@ -175,18 +175,13 @@ namespace Interhaptics.Platforms.Mobile
                 double[] tvt = new double[TransVibSize];
                 double[] tvg = new double[TransVibSize];
 
-                (float)HAR.GetTransientsData(id,2,0.0,(double)hmInfos.vibrationLength,TransVibSize,tvt,tvg,new double[TransVibSize],new int[TransVibSize]);
-                if(hmInfos.vibrationLength > 0)
-                {
-                    UnityEngine.Debug.Log("Get trans data from 0 to "+hmInfos.vibrationLength+" : "+TransVibSize+" found");
-                }
+                HAR.GetTransientsData(id,2,0.0,(double)hmInfos.vibrationLength,TransVibSize,tvt,tvg,new double[TransVibSize],new int[TransVibSize]);
 
                 for(int i =0;i<TransVibSize;i++)
                 {
                     hmInfos.TransientVibTimer[i] = (float)tvt[i];
                     hmInfos.TransientVibGain[i]= (float)tvg[i];
                 }
-                //  HAR.GetTransientsData(id,2,0.0,hmInfos.vibrationLength,hmInfos.TransientVibTimer,hmInfos.TransientVibGain,new float[TransVibSize],new int[TransVibSize]);
                 #endif
 
                 for (int i = 0; i < hmInfos.pattern.Length; i++)
@@ -199,8 +194,8 @@ namespace Interhaptics.Platforms.Mobile
                     hmInfos.pattern[i] = v;
                     hmInfos.timePattern[i] = Mathf.RoundToInt(PATTERN_STEP * 1000);
                     #elif UNITY_IOS
-                    hmInfos.pattern[i] = (float)HAR.GetVibrationAmp(id, i * PATTERN_STEP);
-                    hmInfos.FreqPattern[i] = (float)HAR.GetVibrationFreq(id, i * PATTERN_STEP);
+                    hmInfos.pattern[i] = (float)HAR.GetVibrationAmp(id, (double)(i * PATTERN_STEP));
+                    hmInfos.FreqPattern[i] = (float)HAR.GetVibrationFreq(id, (double)(i * PATTERN_STEP));
                     #endif
                 }
             }
@@ -223,8 +218,8 @@ namespace Interhaptics.Platforms.Mobile
                     hmInfos.globalPattern[i] = v;
                     hmInfos.globalPattern[++i] = v;
                     #elif UNITY_IOS
-                    hmInfos.globalPattern[i] = (float)HAR.GetTextureAmp(id, i * PATTERN_STEP);
-                    hmInfos.globalFreqPattern[i] = (float)HAR.GetTextureFreq(id, i * PATTERN_STEP);
+                    hmInfos.globalPattern[i] = (float)HAR.GetTextureAmp(id, (double)(i * PATTERN_STEP));
+                    hmInfos.globalFreqPattern[i] = (float)HAR.GetTextureFreq(id, (double)(i * PATTERN_STEP));
                     #endif
                 }
             }
@@ -247,8 +242,6 @@ namespace Interhaptics.Platforms.Mobile
             if (hapticsMaterial != null)
             {
                 int id = HAR.AddHM(hapticsMaterial);
-                Debug.LogWarning("id = " + id);
-                Debug.LogWarning("Vib Length :" + (float)HAR.GetVibrationLength(id));
 
                 if (id == -1)
                 {

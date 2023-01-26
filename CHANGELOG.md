@@ -1,3 +1,12 @@
+# 26th of January 2023
+# v1.0.6
+
++ Fixed wrong typecast
++ Backend update for iOS
++ Fix an issue that could throw errors in MacOS editor play mode
+
+---
+
 # 24th of January 2023
 # v1.0.5
 
