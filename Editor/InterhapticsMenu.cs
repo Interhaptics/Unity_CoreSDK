@@ -20,7 +20,7 @@ namespace Interhaptics.Editor
                 camera = UnityEngine.GameObject.FindObjectOfType<UnityEngine.Camera>();
                 if (camera == null)
                 {
-                    UnityEngine.Debug.LogWarning("No camera was found in the seen, so one was generated");
+                    UnityEngine.Debug.LogWarning("No camera was found in the scene, so one was generated");
                     camera = (new UnityEngine.GameObject("Main Camera")).AddComponent<UnityEngine.Camera>();
                     camera.tag = "MainCamera";
                 }

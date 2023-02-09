@@ -15,7 +15,7 @@ namespace Interhaptics.Internal
     {
 
         [SerializeField]
-        private HapticMaterial hapticMaterial;
+        public HapticMaterial hapticMaterial;
 
         [SerializeField]
         private float vibrationOffset;
@@ -23,10 +23,20 @@ namespace Interhaptics.Internal
         private float textureOffset;
         [SerializeField]
         private float stiffnessOffset;
+        [SerializeField]
+        public bool debugMode;
 
         public int HapticMaterialId
         {
-            get; private set;
+            get; set;
+        }
+
+        public void DebugMode(string debugMessage)
+        {
+            if (debugMode)
+            {
+                Debug.Log(debugMessage);
+            }
         }
 
         protected virtual void Awake()

@@ -132,9 +132,12 @@ namespace Interhaptics.Platforms.Mobile
         protected virtual void Awake()
         {
             #if !UNITY_EDITOR_OSX
-            for (int i = 0; i < materials.Length; i++)
+            if (materials != null)
             {
-                this.AddMaterial(materials[i]);
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    this.AddMaterial(materials[i]);
+                }
             }
             #endif
         }

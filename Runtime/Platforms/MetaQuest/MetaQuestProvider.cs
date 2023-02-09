@@ -90,6 +90,10 @@ namespace Interhaptics.Platforms.XR
                 Core.HAR.GetOutputBuffer(outputBuffer, size, Perception.Vibration, BodyPartID.Bp_Left_palm, 0, 0, 0, BufferDataType.PCM);
                 UnityXRHapticAbstraction.VibrateLeft(Time.realtimeSinceStartup - Time.time, outputBuffer);
             }
+            else
+            {
+                UnityXRHapticAbstraction.VibrateLeft(Time.realtimeSinceStartup - Time.time, null);
+            }
 
             size = Core.HAR.GetOutputBufferSize(Perception.Vibration, BodyPartID.Bp_Right_palm, 0, 0, 0, BufferDataType.PCM);
             if (size > 0)
@@ -97,6 +101,10 @@ namespace Interhaptics.Platforms.XR
                 outputBuffer = new double[size];
                 Core.HAR.GetOutputBuffer(outputBuffer, size, Perception.Vibration, BodyPartID.Bp_Right_palm, 0, 0, 0, BufferDataType.PCM);
                 UnityXRHapticAbstraction.VibrateRight(Time.realtimeSinceStartup - Time.time, outputBuffer);
+            }
+            else
+            {
+                UnityXRHapticAbstraction.VibrateRight(Time.realtimeSinceStartup - Time.time, null);
             }
         }
         #endregion

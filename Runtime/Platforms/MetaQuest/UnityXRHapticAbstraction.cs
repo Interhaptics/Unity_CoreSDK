@@ -73,7 +73,7 @@ namespace Interhaptics.Platforms.XR
 
         internal static double PulseFromBuffer(double[] _buffer)
         {
-            if (_buffer.Length == 0)
+            if ((_buffer == null) || (_buffer.Length == 0))
             {
                 return 0;
             }

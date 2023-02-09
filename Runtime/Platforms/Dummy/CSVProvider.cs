@@ -82,11 +82,7 @@ namespace Interhaptics.Platforms.Dummy
         public void RenderHaptics()
         {
 #if UNITY_EDITOR
-            if (sourceFromCpp)
-            {
-                //HAR.TestCppProvider();
-                return;
-            }
+
             double[] outputBuffer;
             double[] halfBuffer;
             int size = Core.HAR.GetOutputBufferSize(Perception.Vibration, BodyPartID.Bp_Left_palm, 0, 0, 0, BufferDataType.PCM);

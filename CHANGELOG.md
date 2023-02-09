@@ -1,3 +1,16 @@
+# 9th of February 2023
+# v1.0.7
+
++ SpatialHapticSource clean and split with EventHapticSource
++ SampleScene_XR added; added assets for scene inside - materials; models, prefabs.
++ custom body parts for controllers instead of one body part
++ added 3d quest 2 controller model; solved haptic residual OnTriggerExit and multiple HapticSources playing at the same time on both controllers
++ added XRControllerHapticSource class as example which inherits from SpatialHapticSource
++ stop haptics when exiting trigger collision fix; check for Stop or Continue haptics when exiting collider
++ added AudioHapticsSource to work in sync with Unity AudioSource components
+
+---
+
 # 26th of January 2023
 # v1.0.6
 
