@@ -1,5 +1,5 @@
 ﻿/* ​
-* Copyright 2022 Go Touch VR SAS. All rights reserved. ​
+* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 
@@ -29,8 +29,12 @@ namespace Interhaptics.Internal
 
         public override void Stop()
         {
+            foreach (var hapticBodyPart in hapticBodyParts)
+            {
+                RemoveTarget(hapticBodyPart.ToCommandData());
+            }
+         //   RemoveTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
 #if !UNITY_PS5 //PS5 platform needs this commented out, otherwise residual haptics and no haptic playback unitl provider update
-            RemoveTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
             base.Stop();
 #endif
         }

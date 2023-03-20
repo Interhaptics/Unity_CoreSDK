@@ -1,5 +1,5 @@
 ﻿/* ​
-* Copyright © 2022 Go Touch VR SAS. All rights reserved. ​
+* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 
@@ -83,16 +83,16 @@ namespace Interhaptics
 
         protected virtual void OnCollisionEnter(Collision other)
         {
-            if (playMethod == PlayMethod.OnCollision)
-            {
+            if ((playMethod == PlayMethod.OnCollision)&&(other.gameObject.GetComponent<HapticBodyPart>() != null))
+            {  
                 ActivateHaptics(other.gameObject);
             }
         }
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (playMethod == PlayMethod.OnTrigger)
-            {
+            if ((playMethod == PlayMethod.OnTrigger) && (other.gameObject.GetComponent<HapticBodyPart>()!=null))
+            { 
                 ActivateHaptics(other.gameObject);
             }
         }

@@ -1,5 +1,5 @@
 ﻿/* ​
-* Copyright © 2022 Go Touch VR SAS. All rights reserved. ​
+* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 
@@ -31,17 +31,16 @@ namespace Interhaptics.Platforms.Mobile
 
         public static void Initialize()
         {
-            // Add APP VIBRATION PERMISSION to the Manifest
+            // load references safely
+            if (isInitialized == false && UnityEngine.Application.platform == UnityEngine.RuntimePlatform.Android)
+            {
+                // Add APP VIBRATION PERMISSION to the Manifest
             #if UNITY_ANDROID
             if (UnityEngine.Application.isConsolePlatform)
             {
                 UnityEngine.Handheld.Vibrate();
             }
             #endif
-
-            // load references safely
-            if (isInitialized == false && UnityEngine.Application.platform == UnityEngine.RuntimePlatform.Android)
-            {
                 // Get Api Level
                 using (UnityEngine.AndroidJavaClass androidVersionClass = new UnityEngine.AndroidJavaClass("android.os.Build$VERSION"))
                 {

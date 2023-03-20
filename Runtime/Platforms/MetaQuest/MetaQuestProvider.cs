@@ -1,5 +1,5 @@
 ﻿/* ​
-* Copyright © 2022 Go Touch VR SAS. All rights reserved. ​
+* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 
@@ -17,14 +17,14 @@ namespace Interhaptics.Platforms.XR
     public sealed class MetaQuestProvider : IHapticProvider
     {
 
-        #region HAPTIC CHARACTERISTICS FIELDS
+#region HAPTIC CHARACTERISTICS FIELDS
         private const string DISPLAY_NAME = "Meta Quest";
         private const string DESCRIPTION = "XR controller for Meta Quest";
         private const string MANUFACTURER = "Meta";
         private const string VERSION = "1.0";
-        #endregion
+#endregion
 
-        #region HAPTIC CHARACTERISTICS GETTERS
+#region HAPTIC CHARACTERISTICS GETTERS
         [UnityEngine.Scripting.Preserve]
         public string DisplayName()
         {
@@ -48,9 +48,9 @@ namespace Interhaptics.Platforms.XR
         {
             return VERSION;
         }
-        #endregion
+#endregion
 
-        #region PROVIDER LOOP
+#region PROVIDER LOOP
         [UnityEngine.Scripting.Preserve]
         public bool Init()
         {
@@ -59,8 +59,9 @@ namespace Interhaptics.Platforms.XR
                 return false;
             }
 
-            Core.HAR.AddBodyPart(Perception.Vibration, BodyPartID.Bp_Left_palm, 1, 1, 1, 500, false, false, false);
-            Core.HAR.AddBodyPart(Perception.Vibration, BodyPartID.Bp_Right_palm, 1, 1, 1, 500, false, false, false);
+            Core.HAR.AddBodyPart(Perception.Vibration, BodyPartID.Bp_Left_palm, 1, 1, 1, 500, false, false, false, true);
+            Core.HAR.AddBodyPart(Perception.Vibration, BodyPartID.Bp_Right_palm, 1, 1, 1, 500, false, false, false, true);
+            UnityEngine.Debug.Log("Meta Quest haptic provider initialised");
             return true;
         }
 
@@ -107,7 +108,7 @@ namespace Interhaptics.Platforms.XR
                 UnityXRHapticAbstraction.VibrateRight(Time.realtimeSinceStartup - Time.time, null);
             }
         }
-        #endregion
+#endregion
 
     }
 

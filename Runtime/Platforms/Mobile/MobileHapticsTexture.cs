@@ -1,5 +1,5 @@
 ﻿/* ​
-* Copyright © 2022 Go Touch VR SAS. All rights reserved. ​
+* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 

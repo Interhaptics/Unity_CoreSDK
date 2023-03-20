@@ -1,166 +1,177 @@
 ﻿/* ​
-* Copyright © 2022 Go Touch VR SAS. All rights reserved. ​
+* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 
+using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using UnityEngine;
 
 namespace Interhaptics.Platforms.Mobile.Tools
 {
-
     public static class iOSUtilities
     {
+        const int PARAMETER_CURVE_MAX_SIZE = 16;
 
-        public static string BufferToAHAP(float[] buffer, float[] frequencies, float[] TransientTimer, float[] TransientGain, float duration, float timestep)
+        public static string BufferToAHAP(float[] _buffer, float[] _frequencies, float[] _transientTimer, float[] _transientGain, float _duration, float _timestep)
         {
-            if (buffer == null)
+            double[] transient = new double[_transientTimer.Length * 4];
+
+            for (int j = 0; j < transient.Length; j += 4) 
+            {
+                transient[j] = _transientTimer[j/4];
+                transient[j + 1] = _transientGain[j/4];
+                transient[j + 2] = 0;
+                transient[j + 3] = 0;
+            }
+
+            double[] buffer = new double[_buffer.Length];
+            double[] frequencies = new double[_frequencies.Length];
+
+            for (int j = 0; j < _frequencies.Length;j++)
+            {
+                frequencies[j] = _frequencies[j];
+            }
+            for (int j = 0; j < _buffer.Length; j++)
+            {
+                buffer[j] = _buffer[j];
+            }
+            return BufferToAHAP(buffer, frequencies, transient, _duration, _timestep);
+        }
+
+        public static string BufferToAHAP(double[] _buffer, double[] _frequencies, double[] _transients, double _duration, double _timestep)
+        {
+            if (_buffer == null)
             {
                 return null;
             }
 
-            if (frequencies == null)
+            AHAP ahap = new AHAP();
+            ahap.Pattern = new List<PatternObject>();
+
+            EventParameter intensity = new EventParameter
             {
-                UnityEngine.Debug.Log("freq null");
-            }
-
-            if (TransientTimer == null || TransientTimer.Length == 0)
+                parameterID = ParameterID.HapticIntensity,
+                parameterValue = 1
+            };
+            EventParameter sharpness = new EventParameter
             {
-                UnityEngine.Debug.Log("trans timer null");
-            }
-
-            if (TransientGain == null)
+                parameterID = ParameterID.HapticSharpness,
+                parameterValue = 0
+            };
+            Event e = new Event
             {
-                UnityEngine.Debug.Log("trans gain null");
-            }
+                Time = 0,
+                eventType = EventType.HapticContinuous,
+                eventDuration = (float)_duration,
+                eventParameters = new EventParameter[2] { intensity, sharpness }
+            };
 
-            List<ParameterCurve> Pattern = new List<ParameterCurve>();
+            ahap.Pattern.Add(e);
 
-            List<Event> Transients = new List<Event>();
-
-            string json = "";
-
-            Event e = new Event();
-            e.Time = 0;
-            e.eventType = EventType.HapticContinuous;
-            e.eventDuration = duration;
-            EventParameter intensity, sharpness;
-            intensity.parameterID = ParameterID.HapticIntensity;
-            intensity.parameterValue = 1;
-            sharpness.parameterID = ParameterID.HapticSharpness;
-            sharpness.parameterValue = 0;
-            e.eventParameters = new EventParameter[2];
-            e.eventParameters[0] = intensity;
-            e.eventParameters[1] = sharpness;
-
-            //Pattern.Add(e);
-
-            int i = 0;
-
-            if (TransientTimer != null && TransientGain != null)
+            // transients ------------------------------------------------------------
+            if (_transients != null)
             {
-                while ((i < TransientTimer.Length) && (i < TransientGain.Length))
+                for (int i = 0; i + 3 < _transients.Length; i += 4)
                 {
-                    Event CurrentTransient = new Event();
-                    CurrentTransient.Time = TransientTimer[i];
-                    CurrentTransient.eventType = EventType.HapticTransient;
-                    EventParameter intensityTrans, sharpnessTrans;
-                    intensityTrans.parameterID = ParameterID.HapticIntensity;
-                    intensityTrans.parameterValue = TransientGain[i];
-                    sharpnessTrans.parameterID = ParameterID.HapticSharpness;
-                    sharpnessTrans.parameterValue = 0.5f;
-                    CurrentTransient.eventParameters = new EventParameter[2];
-                    CurrentTransient.eventParameters[0] = intensityTrans;
-                    CurrentTransient.eventParameters[1] = sharpnessTrans;
-
-                    Transients.Add(CurrentTransient);
-                    UnityEngine.Debug.Log("transient added" + CurrentTransient.ToJson());
-
-                    i++;
-                }
-            }
-
-            i = 0;
-
-            //Amplitude pattern
-            while (i < buffer.Length)
-            {
-                ParameterCurve p1 = new ParameterCurve();
-                p1.parameterID = ParameterID.HapticIntensityControl;
-                p1.Time = i * timestep;
-                p1.parameterCurveControlPoints = new List<ParameterCurveControlPoint>();
-
-                int k = 0;
-                for (k = 0; (k < 16) && (i + k) < buffer.Length; k++)
-                {
-                    ParameterCurveControlPoint point;
-                    point.Time = k * timestep;
-                    point.ParameterValue = buffer[i + k];
-                    p1.parameterCurveControlPoints.Add(point);
-                }
-
-                Pattern.Add(p1);
-
-                i += k;
-            }
-
-            i = 0;
-
-            //Frequency pattern
-            while (i < frequencies.Length)
-            {
-                ParameterCurve p2 = new ParameterCurve();
-                p2.parameterID = ParameterID.HapticSharpnessControl;
-                p2.Time = i * timestep;
-                p2.parameterCurveControlPoints = new List<ParameterCurveControlPoint>();
-
-                int k = 0;
-                for (k = 0; (k < 16) && (i + k) < frequencies.Length; k++)
-                {
-                    ParameterCurveControlPoint point;
-                    point.Time = k * timestep;
-                    float freq = UnityEngine.Mathf.Clamp(frequencies[i + k], 65, 300);
-                    point.ParameterValue = (freq - 300.0f) / 235.0f + 1;
-                    p2.parameterCurveControlPoints.Add(point);
-                }
-
-                Pattern.Add(p2);
-
-                i += k;
-            }
-
-            json += "{" +
-                        "\"Version\": " + 1 + "," +
-                        "\"Metadata\": {" +
-                            "\"Project\": \"\"," +
-                            "\"Created\": \"\"" +
-                           "},";
-            json += "\"Pattern\": [" +
-                            e.ToJson() + ",";
-            if (Transients.Count > 0)
-            {
-                for (int j = 0; j < Transients.Count; j++)
-                {
-                    if (j > 0)
-                        json += ",";
-
-                    json += ((Event)Transients[j]).ToJsonTransient();
-                }
-                json += ",";
-            }
-            if (Pattern.Count > 0)
-            {
-                for (int j = 0; j < Pattern.Count; j++)
-                {
-                    if (j > 0)
+                    EventParameter intensityTrans = new EventParameter
                     {
-                        json += ",";
-                    }
+                        parameterID = ParameterID.HapticIntensity,
+                        parameterValue = (float)_transients[i + 1]
+                    };
+                    EventParameter sharpnessTrans = new EventParameter
+                    {
+                        parameterID = ParameterID.HapticSharpness,
+                        parameterValue = 0.5f
+                    };
 
-                    json += ((ParameterCurve)Pattern[j]).ToJson();
+                    Event CurrentTransient = new Event
+                    {
+                        Time = (float)_transients[i],
+                        eventType = EventType.HapticTransient,
+                        eventParameters = new EventParameter[2] { intensityTrans, sharpnessTrans }
+                    };
+                    ahap.Pattern.Add(CurrentTransient);
+
+                    //puting the amplitude modulation at 1 for the transients ---
+                    float currentTransStart = CurrentTransient.Time;
+                    float currentTransEnd = currentTransStart + 0.01f;
+
+                    int startIndex = (int)(currentTransStart / _timestep);
+                    int endIndex = Math.Min((int)(currentTransEnd / _timestep), startIndex + 1);
+
+                    int end = Math.Min(endIndex, _buffer.Length);
+                    for (int index = Math.Max(startIndex,0); index < end; index++)
+                    {
+                        _buffer[index] = 1;
+                    }
                 }
             }
+            // -----------------------------------------------------------------------
 
+            //Amplitude pattern ------------------------------------------------------
+            for (int j = 0; j < _buffer.Length; j += PARAMETER_CURVE_MAX_SIZE)
+            {
+                List<ParameterCurveControlPoint> controlPoints = _buffer.Skip(j)
+                       .Take(Math.Min(_buffer.Length - j, PARAMETER_CURVE_MAX_SIZE))
+                       .Select((Value, Index) => new ParameterCurveControlPoint
+                       {
+                           Time = (j + Index) * _timestep,
+                           ParameterValue = Mathf.Max(0, (float)Value)
+                           //ParameterValue = 1
+                       }).ToList();
+
+                ParameterCurve parameterCurve = new ParameterCurve
+                {
+                    parameterID = ParameterID.HapticIntensityControl,
+                    Time = j * _timestep,
+                    parameterCurveControlPoints = controlPoints
+                };
+                ahap.Pattern.Add(parameterCurve);
+            }
+            // -----------------------------------------------------------------------
+
+            // Frequency pattern ------------------------------------------------------
+
+            for (int j = 0; j < _buffer.Length; j += PARAMETER_CURVE_MAX_SIZE)
+            {
+                List<ParameterCurveControlPoint> controlPoints = _frequencies.Skip(j)
+                       .Take(Math.Min(_frequencies.Length - j, PARAMETER_CURVE_MAX_SIZE))
+                       .Select((Value, Index) => new ParameterCurveControlPoint
+                       {
+                           Time = (j + Index) * _timestep,
+                           ParameterValue = Mathf.Max(0, (float)Value)
+                       }).ToList();
+
+                ParameterCurve parameterCurve = new ParameterCurve
+                {
+                    parameterID = ParameterID.HapticSharpnessControl,
+                    Time = j * _timestep,
+                    parameterCurveControlPoints = controlPoints
+                };
+                ahap.Pattern.Add(parameterCurve);
+            }
+            // -----------------------------------------------------------------------
+
+            return ahap.ToJson();
+        }
+    }
+
+    public class AHAP
+    {
+        public int Version = 1;
+        public MetaData Metadata = new MetaData() ;
+        public List<PatternObject> Pattern;
+
+        public string ToJson()
+        {
+            string json = "{" +
+                     "\"Version\": " + Version + ","
+                     + Metadata.ToJson();
+
+            json += "\"Pattern\": [";
+            json += string.Join(",", Pattern.Select(e => e.ToJson()));
             json += "]}";
             return json;
         }
@@ -170,6 +181,14 @@ namespace Interhaptics.Platforms.Mobile.Tools
     {
         public string Project = "";
         public string Created = "";
+
+        public string ToJson()
+        {
+            return "\"Metadata\": {" +
+                         "\"Project\": \""+Project+"\"," +
+                         "\"Created\": \""+Created+"\"" +
+                        "},";
+        }
     }
 
 
@@ -178,13 +197,11 @@ namespace Interhaptics.Platforms.Mobile.Tools
         public abstract string ToJson();
     }
 
-    public class Event
+    public class Event : PatternObject
     {
-
-        public string ToJson()
+        public override string  ToJson()
         {
             string json = "";
-
             string eventParametersStr = "\"EventParameters\": [";
 
             if (eventParameters.Length > 0)
@@ -195,7 +212,6 @@ namespace Interhaptics.Platforms.Mobile.Tools
                     {
                         eventParametersStr += ", ";
                     }
-
                     eventParametersStr += "{" + "" +
                                             "\"ParameterID\": \"" + eventParameters[i].parameterID.ToString() + "\"," +
                                             "\"ParameterValue\": " + eventParameters[i].parameterValue +
@@ -216,40 +232,6 @@ namespace Interhaptics.Platforms.Mobile.Tools
             return json;
         }
 
-        public string ToJsonTransient()
-        {
-            string json = "";
-
-            string eventParametersStr = "\"EventParameters\": [";
-
-            if (eventParameters.Length > 0)
-            {
-                for (int i = 0; i < eventParameters.Length; i++)
-                {
-                    if (i > 0)
-                    {
-                        eventParametersStr += ", ";
-                    }
-
-                    eventParametersStr += "{" + "" +
-                                            "\"ParameterID\": \"" + eventParameters[i].parameterID.ToString() + "\"," +
-                                            "\"ParameterValue\": " + eventParameters[i].parameterValue +
-                                          "}";
-                }
-            }
-            eventParametersStr += "]";
-
-            json += "{" +
-                        "\"Event\": {" +
-                            "\"Time\": " + Time + "," +
-                            "\"EventType\": \"" + EventType.HapticTransient.ToString() + "\"," +
-                            eventParametersStr +
-                        "}" +
-                    "}";
-
-            return json;
-        }
-
         public float Time = 0;
         public EventType eventType = EventType.HapticContinuous;
         public float eventDuration = 0;
@@ -257,10 +239,10 @@ namespace Interhaptics.Platforms.Mobile.Tools
 
     }
 
-    public class ParameterCurve
+    public class ParameterCurve : PatternObject
     {
 
-        public string ToJson()
+        public override string ToJson()
         {
             string json = "";
 
@@ -295,7 +277,7 @@ namespace Interhaptics.Platforms.Mobile.Tools
         }
 
         public ParameterID parameterID = ParameterID.HapticIntensityControl;
-        public float Time = 0;
+        public double Time = 0;
         public List<ParameterCurveControlPoint> parameterCurveControlPoints;
 
     }
@@ -317,13 +299,13 @@ namespace Interhaptics.Platforms.Mobile.Tools
     public struct EventParameter
     {
         public ParameterID parameterID;
-        public float parameterValue;
+        public double parameterValue;
     }
 
     public struct ParameterCurveControlPoint
     {
-        public float Time;
-        public float ParameterValue;
+        public double Time;
+        public double ParameterValue;
     }
 
 }

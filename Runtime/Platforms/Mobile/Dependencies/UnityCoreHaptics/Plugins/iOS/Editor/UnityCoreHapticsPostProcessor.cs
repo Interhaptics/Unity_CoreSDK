@@ -1,4 +1,9 @@
-﻿#if UNITY_IOS
+﻿/* ​
+* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
+* ​
+*/
+
+#if UNITY_IOS
 using System;
 using System.IO;
 
@@ -16,7 +21,12 @@ public static class UnityCoreHapticsPostProcessor
   // Set to path that this script is in
   const string MODULE_MAP_FILENAME = "module.modulemap";
 
-  [PostProcessBuild]
+  //modify variable according to package: Unity Asset Store / GitHub
+  private static bool assetStoreBuild = false;
+  private static string pluginRelativePathInXCode;
+
+
+    [PostProcessBuild]
   public static void OnPostProcessBuild(BuildTarget buildTarget, string buildPath)
   {
     if (buildTarget == BuildTarget.iOS)
@@ -25,6 +35,29 @@ public static class UnityCoreHapticsPostProcessor
       var proj = new PBXProject();
       proj.ReadFromFile(pbxProjectPath);
 
+            // Find the script file
+            var guids = AssetDatabase.FindAssets("t:Script UnityCoreHaptics");
+            if (guids.Length == 0)
+            {
+                Debug.LogError("UnityCoreHaptics script not found");
+                return;
+            }
+            string scriptPath = AssetDatabase.GUIDToAssetPath(guids[0]);
+            Debug.Log("UnityCoreHaptics Path:" + scriptPath);
+
+            // Retrieve the paths of the Assets and PackageCache folders
+            string assetsFolder = "Assets/";
+
+            // Check if the script is in the Assets or PackageCache folder
+            if (scriptPath.StartsWith(assetsFolder))
+            {
+                assetStoreBuild = true;
+            }
+            else
+            {
+                assetStoreBuild = false;
+            }
+
       string targetGUID = proj.GetUnityFrameworkTargetGuid();
 
       // Get relative path of the plugin the from Assets folder
@@ -32,7 +65,15 @@ public static class UnityCoreHapticsPostProcessor
       var pluginRelativePathInUnity = GetPluginPathRelativeToAssets();
 
       // Get relative path of the plugin in XCode
-      string pluginRelativePathInXCode = Path.Combine("Libraries", "com.interhaptics.core_sdk", pluginRelativePathInUnity);
+      string pluginRelativePathInXCode = "";
+      if (assetStoreBuild)
+      {
+            pluginRelativePathInXCode = Path.Combine("Libraries", pluginRelativePathInUnity);
+      }
+      else
+      {
+            pluginRelativePathInXCode = Path.Combine("Libraries", "com.interhaptics.core_sdk", pluginRelativePathInUnity);
+      }
 
       proj.AddFrameworkToProject(targetGUID, "CoreHaptics.framework", false);
       proj.SetBuildProperty(targetGUID, "ENABLE_BITCODE", "NO");
@@ -69,11 +110,26 @@ public static class UnityCoreHapticsPostProcessor
   }
 
   private static string GetPluginPathRelativeToAssets() {
-      string[] files = System.IO.Directory.GetFiles(Path.GetFullPath("Packages/com.interhaptics.core_sdk"), "UnityCoreHapticsProxy.cs", SearchOption.AllDirectories);
+  string[] files; 
+  if (assetStoreBuild)
+  {
+      files = System.IO.Directory.GetFiles(UnityEngine.Application.dataPath, "UnityCoreHapticsProxy.cs", SearchOption.AllDirectories);
+  }
+  else
+  {
+        files = System.IO.Directory.GetFiles(Path.GetFullPath("Packages/com.interhaptics.core_sdk"), "UnityCoreHapticsProxy.cs", SearchOption.AllDirectories);
+  }
       if (files.Length != 1) {
         throw new Exception("[UnityCoreHapticsPostProcessor] Error: there should exactly be one file named UnityCoreHapticsProxy.cs");
       }
-      return Path.GetDirectoryName(_getRelativePath(Path.GetFullPath("Packages/com.interhaptics.core_sdk"), files[0]));
+      if (assetStoreBuild)
+      {
+            return Path.GetDirectoryName(_getRelativePath(UnityEngine.Application.dataPath, files[0]));
+      }
+      else
+      {
+            return Path.GetDirectoryName(_getRelativePath(Path.GetFullPath("Packages/com.interhaptics.core_sdk"), files[0]));
+      }
   }
 
   private static void WriteModuleToFramework(
@@ -92,7 +148,15 @@ public static class UnityCoreHapticsPostProcessor
     proj.WriteToFile(pbxProjectPath);
 
     // Copy the module file from Unity to XCode
-    string sourcePath = Path.Combine(Path.GetFullPath("Packages/com.interhaptics.core_sdk"), pluginRelativePathInUnity, MODULE_MAP_FILENAME);
+    string sourcePath;
+    if (assetStoreBuild)
+    {
+        sourcePath = Path.Combine(UnityEngine.Application.dataPath, pluginRelativePathInUnity, MODULE_MAP_FILENAME);
+    }
+    else
+    {
+        sourcePath = Path.Combine(Path.GetFullPath("Packages/com.interhaptics.core_sdk"), pluginRelativePathInUnity, MODULE_MAP_FILENAME);
+    }
     string destPath = Path.Combine(Path.GetDirectoryName(pbxProjectPath), "..", moduleMapDestRelativePath);
     if (!Directory.Exists(Path.GetDirectoryName(destPath)))
     {

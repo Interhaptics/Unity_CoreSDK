@@ -1,3 +1,16 @@
+# 16th of March 2023
+# v1.1.0
+
++ v1.0.7 and prior Mobile SDK moved to Legacy
++ New Mobile SDK aligned with the main SDK, using Haptic Sources
++ Mobile Sample scene
++ XInput support. Build PC games with haptics for controllers !
++ Dummy Haptic provider removed
++ Unity script bugfixing
++ Haptic engine update
+
+---
+
 # 9th of February 2023
 # v1.0.7
 

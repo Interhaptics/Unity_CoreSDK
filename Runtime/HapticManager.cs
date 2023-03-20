@@ -1,5 +1,5 @@
 ﻿/* ​
-* Copyright © 2022 Go Touch VR SAS. All rights reserved. ​
+* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 
@@ -33,13 +33,10 @@ namespace Interhaptics
 
         private void LateUpdate()
         {
-#if !UNITY_IOS //TODO make sure it does not run on mobile ? Also we will change mobile to use that so idk
             //Compute all haptics event
             Core.HAR.ComputeAllEvents(UnityEngine.Time.realtimeSinceStartup);
-
             //Insert device rendering loop here
             Internal.HapticDeviceManager.DeviceRenderLoop();
-#endif
         }
 
         private void OnApplicationFocus(bool hasFocus)
