@@ -1,4 +1,12 @@
-# 16th of March 2023
+# 2023.04.13
+# v1.1.1
+
++ XInput sample scene. Installed input presets in Assets\InputManager for XInput or XR depending on the sample scene.
++ updated dlls
+
+---
+
+# 2023.03.16
 # v1.1.0
 
 + v1.0.7 and prior Mobile SDK moved to Legacy
@@ -11,7 +19,7 @@
 
 ---
 
-# 9th of February 2023
+# 2023.02.09
 # v1.0.7
 
 + SpatialHapticSource clean and split with EventHapticSource
@@ -24,7 +32,7 @@
 
 ---
 
-# 26th of January 2023
+# 2023.01.26
 # v1.0.6
 
 + Fixed wrong typecast
@@ -33,7 +41,7 @@
 
 ---
 
-# 24th of January 2023
+# 2023.01.24
 # v1.0.5
 
 + Added VerboseMode and Play/Stop Parameters for Trigger and Collision (on by default); exposed HapticMaterialId
@@ -45,7 +53,7 @@
 
 ---
 
-# 13th of January 2023
+# 2023.01.13
 # v1.0.4
 
 + Added missing HAR entry points
@@ -54,14 +62,14 @@
 
 ---
 
-# 1st of December 2022
+# 2022.12.01
 # v1.0.2
 
 + Add slider scripts for the mobile SDK
 
 ---
 
-# 29th of November 2022
+# 2022.11.29
 # v1.0.1
 
 + Add audio samples to complete the Audio/Haptics synchronized sample assets
