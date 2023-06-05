@@ -1,0 +1,54 @@
+{
+    "name": "IH_HapticsInput",
+    "maps": [
+        {
+            "name": "HapticsXR",
+            "id": "cb5a2207-7e84-46e3-8f8d-38e5b312def6",
+            "actions": [
+                {
+                    "name": "Left",
+                    "type": "Value",
+                    "id": "98e14162-25d0-4640-89ae-c88f70e3e340",
+                    "expectedControlType": "Haptic",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Right",
+                    "type": "Value",
+                    "id": "2f219f26-2872-45ef-9133-636d833ebcf6",
+                    "expectedControlType": "Haptic",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "07120713-2f08-4c23-af73-308fb7393ccd",
+                    "path": "<XRController>{LeftHand}/haptic",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "21259124-14f0-4518-8ef2-52289145b374",
+                    "path": "<XRController>{RightHand}/haptic",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
