@@ -8,9 +8,12 @@ namespace Interhaptics.Platforms.Mobile
 
     public class GenericAndroidHapticAbstraction
     {
-
         // Component Parameters
         public static logLevel LogLevel = logLevel.Warning;
+
+        // Can be modified to tune the experience
+        // Can be changed in runtime
+        public static int AmplitudeThreshold = 100;
 
         // Vibrator References
         private static UnityEngine.AndroidJavaObject vibrator = null;
@@ -21,10 +24,6 @@ namespace Interhaptics.Platforms.Mobile
         private static int ApiLevel = 1;
         private static bool doesSupportVibrationEffect() => ApiLevel >= 26;    // available only from Api >= 26
         private static bool doesSupportPredefinedEffect() => ApiLevel >= 29;   // available only from Api >= 29
-
-        public static float m_timer = 0;
-        public static float m_last_time = 0;
-        public static int pulse = 0;
 
         #region Initialization
         private static bool isInitialized = false;
@@ -138,7 +137,7 @@ namespace Interhaptics.Platforms.Mobile
         /// </summary>
         public static void Vibrate(long[] pattern, int[] amplitudes = null, int repeat = -1, bool cancel = false)
         {
-            string funcToStr() => string.Format("Vibrate (({0}), ({1}), {2}, {3})", arrToStr(pattern), arrToStr(amplitudes), repeat, cancel);
+            string funcToStr() => string.Format("Vibrate (pattern, amplitudes, repeat, cancel)");
 
             Initialize(); // make sure script is initialized
             if (isInitialized == false)
@@ -170,26 +169,18 @@ namespace Interhaptics.Platforms.Mobile
                 }
                 if (doesSupportVibrationEffect())
                 {
-                    if (amplitudes != null && HasAmplitudeControl() == false)
-                    {
-                        logAuto(funcToStr() + ": Device doesn't have Amplitude Control, but Amplitudes was set", logLevel.Warning);
-                        amplitudes = null;
-                    }
-                    if (amplitudes != null)
+                    if (amplitudes != null && HasAmplitudeControl() == true)
                     {
                         //Case High Capabilities
                         vibrateEffect(pattern, amplitudes, repeat);
                         logAuto(funcToStr() + ": Effect with amplitudes called", logLevel.Info);
-                    }
-                    else
-                    {
-                        //Case Medium capabilities
+                        return;
                     }
                 }
-                else
-                {
-                    //Case low capabilities
-                }
+
+                logAuto(funcToStr() + ": called but device has no amplitude control", logLevel.Warning);
+                //Case Medium & low capabilities
+                vibrateEffect(TimingsFromAmplitudes(amplitudes, pattern[1]), repeat);
             }
         }
 
@@ -268,6 +259,41 @@ namespace Interhaptics.Platforms.Mobile
             return timings;
         }
 
+        public static long[] TimingsFromAmplitudes(int[] amplitudes, long amplitudeDuration)
+        {
+            if (amplitudes == null)
+            {
+                return new long[] { 0, 0 };
+            }
+
+            System.Collections.Generic.List<long> timings = new System.Collections.Generic.List<long>();
+
+            int currentAmplitudeIndex = 0;
+            long currentTimingValue = 0;
+
+            while (currentAmplitudeIndex < amplitudes.Length)
+            {
+                //get duration under threshold
+                currentTimingValue = 0;
+                while (currentAmplitudeIndex < amplitudes.Length && amplitudes[currentAmplitudeIndex] < AmplitudeThreshold)
+                {
+                    currentTimingValue += amplitudeDuration;
+                    currentAmplitudeIndex++;
+                }
+                timings.Add(currentTimingValue);
+
+                //get duration over threshold
+                currentTimingValue = 0;
+                while (currentAmplitudeIndex < amplitudes.Length && amplitudes[currentAmplitudeIndex] >= AmplitudeThreshold)
+                {
+                    currentTimingValue += amplitudeDuration;
+                    currentAmplitudeIndex++;
+                }
+                timings.Add(currentTimingValue);
+            }
+
+            return timings.ToArray();
+        }
         /// <summary>
         /// Returns Android Api Level
         /// </summary>

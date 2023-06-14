@@ -16,9 +16,6 @@ namespace Interhaptics
             Internal.HapticDeviceManager.DeviceInitLoop();
 #if UNITY_ANDROID && !ENABLE_METAQUEST
             Platforms.Mobile.GenericAndroidHapticAbstraction.Initialize();
-            Platforms.Mobile.GenericAndroidHapticAbstraction.m_timer = 30;
-            Platforms.Mobile.GenericAndroidHapticAbstraction.pulse = 30;
-            Platforms.Mobile.GenericAndroidHapticAbstraction.m_last_time = UnityEngine.Time.fixedTime;
 #elif UNITY_IPHONE
             UnityCoreHaptics.UnityCoreHapticsProxy.CreateEngine();
 #endif

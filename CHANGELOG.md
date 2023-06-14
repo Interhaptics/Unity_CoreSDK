@@ -1,13 +1,22 @@
+# 2023.06.14
+# v1.2.2
+
++ Fix an issue that could prevent some Android phones to not render haptics
+
+---
+
 # 2023.06.05
 # v1.2.1
 
 + OpenXR haptic support
 
+---
+
 # 2023.04.13
 # v1.1.1
 
 + XInput sample scene. Installed input presets in Assets\InputManager for XInput or XR depending on the sample scene.
-+ updated dlls
++ Updated dlls
 
 ---
 
