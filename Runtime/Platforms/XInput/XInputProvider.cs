@@ -52,22 +52,23 @@ namespace Interhaptics.Platforms.XInput
             const string DLL_NAME = "Interhaptics.XInputProvider";
 
             [DllImport(DLL_NAME)]
-            public static extern bool IHProviderXInput_Init();
+            public static extern bool ProviderInit();
             [DllImport(DLL_NAME)]
-            public static extern bool IHProviderXInput_IsPresent();
+            public static extern bool ProviderIsPresent();
             [DllImport(DLL_NAME)]
-            public static extern bool IHProviderXInput_Clean();
+            public static extern bool ProviderClean();
             [DllImport(DLL_NAME)]
-            public static extern void IHProviderXInput_RenderHaptics();
+            public static extern void ProviderRenderHaptics();
         }
 
         [UnityEngine.Scripting.Preserve]
         public bool Init()
         {
-            bool res = XInputProviderNative.IHProviderXInput_Init();
-            if (res)
+            bool res = XInputProviderNative.ProviderInit();
+
+            if ((res) && (HapticManager.Instance.DebugSwitch))
             {
-                UnityEngine.Debug.Log("XInput haptic provider initialised");
+                UnityEngine.Debug.Log("XInput haptic provider started.");
             }
             return res;
         }
@@ -75,19 +76,19 @@ namespace Interhaptics.Platforms.XInput
         [UnityEngine.Scripting.Preserve]
         public bool IsPresent()
         {
-            return XInputProviderNative.IHProviderXInput_IsPresent();
+            return XInputProviderNative.ProviderIsPresent();
         }
 
         [UnityEngine.Scripting.Preserve]
         public bool Clean()
         {
-            return XInputProviderNative.IHProviderXInput_Clean();
+            return XInputProviderNative.ProviderClean();
         }
 
         [UnityEngine.Scripting.Preserve]
         public void RenderHaptics()
         {
-            XInputProviderNative.IHProviderXInput_RenderHaptics();
+            XInputProviderNative.ProviderRenderHaptics();
         }
         #endregion
 

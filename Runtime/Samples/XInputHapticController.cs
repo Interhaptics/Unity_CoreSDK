@@ -40,13 +40,56 @@ namespace Interhaptics.Platforms.XInput.Samples
         [Range(0, 2)]
         private int indexVibration;
         private bool canModifyVibrationType = true;
+		private AudioSource[] allAudioSources;
+		private SpatialHapticSource[] allSpatialHapticSources;
 
-        private void Start()
+		private void Start()
         {
             VibrationHapticSourceGUI();
         }
 
-        private void Update()
+		private void ResetHapticSources()
+		{
+			Core.HAR.ClearActiveEvents();
+			allAudioSources = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+			foreach (AudioSource audioSource in allAudioSources)
+			{
+				if (audioSource.isPlaying)
+				{
+					audioSource.Stop();
+					Debug.Log("Audio Source stopped: " + audioSource);
+					break;
+				}
+			}
+			allSpatialHapticSources = FindObjectsOfType(typeof(SpatialHapticSource)) as SpatialHapticSource[];
+			foreach (SpatialHapticSource spatialHapticSource in allSpatialHapticSources)
+			{
+				if (spatialHapticSource.GetComponent<ObjectTransform>().buttonPressed)
+				{
+					spatialHapticSource.GetComponent<ObjectTransform>().buttonPressed = false;
+					spatialHapticSource.GetComponent<ObjectTransform>().ResetPosition();
+					break;
+				}
+			}
+		}
+
+		private void OnApplicationFocus(bool hasFocus)
+		{
+			if (!hasFocus)
+			{
+				ResetHapticSources();
+			}
+		}
+
+		private void OnApplicationPause(bool pauseStatus)
+		{
+            if (pauseStatus)
+            { 				
+                ResetHapticSources();
+            }
+
+		}
+		private void Update()
         {
             VibrationButtons();
             ButtonsUI();
@@ -71,7 +114,7 @@ namespace Interhaptics.Platforms.XInput.Samples
             };
             for (int i = 0; i < joystickButtonCodes.Length; i++)
             {
-                if (Input.GetKey(joystickButtonCodes[i]))
+                if (Input.GetKeyDown(joystickButtonCodes[i]))
                 {
                     HapticVibrationController(indexVibration, i);
                 }
@@ -99,20 +142,23 @@ namespace Interhaptics.Platforms.XInput.Samples
 
         public void PlayAudioVibrationController(int indexButton)
         {
-            audioHapticSources[indexButton].Play();
+            ResetHapticSources();
+			audioHapticSources[indexButton].Play();
             vibrationMaterialName.text = audioHapticSources[indexButton].name;
         }
 
         public void PlayEventVibrationController(int indexButton)
         {
-            eventHapticSources[indexButton].PlayEventVibration();
+			ResetHapticSources();
+			eventHapticSources[indexButton].PlayEventVibration();
             vibrationMaterialName.text = eventHapticSources[indexButton].name;
         }
 
         public void PlaySpatialVibrationController(int indexButton)
         {
-            spatialHapticSources[indexButton].GetComponent<ObjectTransform>().enabled = true;
-            spatialHapticSources[indexButton].GetComponent<ObjectTransform>().MoveSpatialHapticSource();
+			ResetHapticSources();
+			spatialHapticSources[indexButton].GetComponent<ObjectTransform>().enabled = true;
+            spatialHapticSources[indexButton].GetComponent<ObjectTransform>().buttonPressed = true;
             vibrationMaterialName.text = spatialHapticSources[indexButton].name;
         }
 

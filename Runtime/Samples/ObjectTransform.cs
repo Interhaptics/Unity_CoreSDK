@@ -13,22 +13,35 @@ namespace Interhaptics.Samples
         public float leftLimit = -1.5f;
         public float rightLimit = 1.5f;
         public bool moveAtStart = false;
+        public bool buttonPressed = false;
 
         private float targetX;
         private bool movingRight = true;
+		private Vector3 originalPosition;
+		private bool returningToOrigin = false;
 
-        private void Start()
+		private void Start()
         {
-            targetX = rightLimit;
+			originalPosition = transform.position;
+			targetX = rightLimit;
         }
 
         private void Update()
         {
-            if (moveAtStart)
+            if ((moveAtStart)||(buttonPressed))
             {
                 MoveSpatialHapticSource();
             }
         }
+
+        public void ResetPosition()
+        {
+			transform.position = originalPosition;
+			targetX = rightLimit;
+			movingRight = true;
+			returningToOrigin = false;
+            buttonPressed = false;
+		}
 
         public void MoveSpatialHapticSource()
         {
@@ -38,15 +51,23 @@ namespace Interhaptics.Samples
                 transform.position.z
             );
 
-            if (Mathf.Approximately(transform.position.x, targetX))
+			if (Mathf.Approximately(transform.position.x, targetX))
             {
-                if (movingRight)
+				if (returningToOrigin)
+				{
+					moveAtStart = false; // Stop moving after returning to origin if started due to moveAtStart
+                    ResetPosition(); // Reset position to origin
+					return; // Exit early as we've returned to the origin
+				}
+
+				if (movingRight)
                 {
                     targetX = leftLimit;
                 }
                 else
                 {
-                    targetX = rightLimit;
+                    targetX = originalPosition.x;
+                    returningToOrigin = true;
                 }
                 movingRight = !movingRight;
             }

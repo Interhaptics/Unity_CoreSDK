@@ -25,8 +25,9 @@ namespace Interhaptics.Internal
         private float stiffnessOffset;
         [SerializeField]
         public bool debugMode;
+		private const string ERROR_MESSAGE_MONO = "Interhaptics requires IL2CPP scripting backend for Android. Please change it in Player Settings. Haptics will not play on the Mono scripting backend on the Android platform.";
 
-        public int HapticMaterialId
+		public int HapticMaterialId
         {
             get; set;
         }
@@ -41,13 +42,29 @@ namespace Interhaptics.Internal
 
         protected virtual void Awake()
         {
+#if UNITY_ANDROID
+			if (HapticManager.Instance.monoScriptingBackend)
+			{
+				DebugMode(ERROR_MESSAGE_MONO + "Haptic Source");
+				return;
+			}
+            else
+            {
+                DebugMode("IL2CPP Haptic Source");
+            }
+#endif
             HapticMaterialId = Core.HAR.AddHM(hapticMaterial);
-        }
+		}
 
-        public virtual void Play()
+		public virtual void Play()
         {
             Core.HAR.PlayEvent(HapticMaterialId, -Time.realtimeSinceStartup + vibrationOffset, textureOffset, stiffnessOffset);
         }
+
+        public virtual void PlayTexture(float _distance)
+        {
+            Debug.Log("Playing texture! " + HapticMaterialId);
+		}
 
         public virtual void Stop()
         {

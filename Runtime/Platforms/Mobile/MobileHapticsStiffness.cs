@@ -8,23 +8,25 @@ using UnityEngine;
 
 namespace Interhaptics.Platforms.Mobile
 {
-
     /// <summary>
     /// Allow users to play real-time haptics from a material.
     /// </summary>
-    /// <remarks>The current script only works with IOS</remarks>
+    /// <remarks>The current script only works with iOS</remarks>
     [DisallowMultipleComponent]
     [AddComponentMenu("Interhaptics/Mobile/HapticsStiffness")]
     public class MobileHapticsStiffness : AMobileHapticsReader
     {
 
-        #region Constantes
-        #if !UNITY_EDITOR && UNITY_IOS
-        private const float VALUE_VibrationTime = 0.1f;
-        #endif
+#region Variables
+        [SerializeField] private bool debugMode;
+#endregion
 
-        private HapticsMaterialTuple? _currentMaterial = default;
-        #endregion
+#region Constants
+#if !UNITY_EDITOR && UNITY_IOS
+        private const float VALUE_VibrationTime = 0.1f;
+#endif
+		private HapticsMaterialTuple? _currentMaterial = default;
+#endregion
 
         #region Publics
         /// <summary>
@@ -54,13 +56,14 @@ namespace Interhaptics.Platforms.Mobile
             float stiffnessAmplitude = (float)Core.HAR.GetStiffnessAmp(_currentMaterial.Value.materialInfos.id, distance);
 
             #if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IOS)
-            Debug.Log($"{this.GetType().Name}: (<br>Material =</br> {_currentMaterial.Value.materialInfos.material.name} | <br>Value =</br> {distance} | <br>Amplitude =</br> {stiffnessAmplitude}）", this);
+            if (debugMode)
+            {
+				Debug.Log($"{this.GetType().Name}: (<br>Material =</br> {_currentMaterial.Value.materialInfos.material.name} | <br>Value =</br> {distance} | <br>Amplitude =</br> {stiffnessAmplitude}）", this);
+			}
             #elif UNITY_IOS
             UnityCoreHaptics.UnityCoreHapticsProxy.PlayContinuousHaptics(stiffnessAmplitude, 1, VALUE_VibrationTime);
             #endif
         }
         #endregion
-
     }
-
 }

@@ -1,3 +1,12 @@
+# 2023.08.28
+# v1.2.3
+
++ Updated Scenes for mobile (Android/iOS) and XInput providers
++ Fixed crashes on Android when Scripting Backend is Mono. Haptics will not work on Android unless switching Scripting Backend to IL2CPP.
++ Fixed haptics playing on Pause/Not in Focus/Exit PlayMode
++ Debug switches added for Haptic Manager, Haptic Sources and Legacy Mobile Haptic Effects
++ Updated dlls  
+
 # 2023.06.14
 # v1.2.2
 

@@ -41,15 +41,18 @@ namespace Interhaptics.Platforms.Mobile
 
         #region Variables
         private Dictionary<int, TextureInfo> textureMaterials = new Dictionary<int, TextureInfo>();
-        #endregion
+        [SerializeField]
+		private bool debugMode;
+		#endregion
 
-        #region Publics
-        /// <summary>
-        /// Compute haptics texture from a material.
-        /// </summary>
-        /// <param name="index">Index of the loaded material</param>
-        /// <param name="distance">Current distance on the texture (real distance 1 unit = 1 meter)</param>
-        public void PlayTexture(int index, float distance)
+		#region Publics
+		/// <summary>
+		/// Compute haptics texture from a material.
+		/// </summary>
+		/// <param name="index">Index of the loaded material</param>
+		/// <param name="distance">Current distance on the texture (real distance 1 unit = 1 meter)</param>
+		/// 
+		public void PlayTexture(int index, float distance)
         {
             if (!textureMaterials.ContainsKey(index))
             {
@@ -74,7 +77,10 @@ namespace Interhaptics.Platforms.Mobile
             }
 
             #if UNITY_EDITOR
-            Debug.Log($"{this.GetType().Name}: (<b>Material =</b> {currentTextureInfo.MaterialInfos.material.name} | <b>Value =</b> {distance} | <b>Amplitude =</b> {Interhaptics.Core.HAR.GetTextureAmp(currentTextureInfo.MaterialInfos.id, distance)}", this);
+            if (debugMode)
+            {
+				Debug.Log($"{this.GetType().Name}: (<b>Material =</b> {currentTextureInfo.MaterialInfos.material.name} | <b>Value =</b> {distance} | <b>Amplitude =</b> {Interhaptics.Core.HAR.GetTextureAmp(currentTextureInfo.MaterialInfos.id, distance)}", this);
+			}
             #elif (UNITY_ANDROID || UNITY_IOS)
 
             if (currentTextureInfo.MaterialInfos.globalPattern == null || currentTextureInfo.MaterialInfos.globalPattern.Length <= 0)

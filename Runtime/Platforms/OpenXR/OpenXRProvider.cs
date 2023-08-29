@@ -66,7 +66,10 @@ namespace Interhaptics.Platforms.XR
 
             Core.HAR.AddBodyPart(Perception.Vibration, BodyPartID.Bp_Left_palm, 1, 1, 1, sampleRate, false, false, false, true);
             Core.HAR.AddBodyPart(Perception.Vibration, BodyPartID.Bp_Right_palm, 1, 1, 1, sampleRate, false, false, false, true);
-            UnityEngine.Debug.Log("OpenXR haptic provider initialised");
+            if (HapticManager.Instance.DebugSwitch) 
+            {
+            UnityEngine.Debug.Log("OpenXR haptic provider started.");
+            }
             return true;
         }
 

@@ -23,13 +23,14 @@ namespace Interhaptics.Platforms.Mobile
         #region Constants
         #if UNITY_ANDROID
         public const float PATTERN_STEP = 0.005f;
-        #elif UNITY_IOS
+#elif UNITY_IOS
         public const float PATTERN_STEP = 0.001f;
-        #endif
+#endif
 
-        //TODO unite PATTERN_STEP
+		//TODO unite PATTERN_STEP
 
-        private const string ERROR_NullMaterial = "Null material";
+		private const string ERROR_MESSAGE_MONO = "Interhaptics requires IL2CPP scripting backend for Android. Please change it in Player Settings. Haptics will not play on the Mono scripting backend on the Android platform.";
+		private const string ERROR_NullMaterial = "Null material";
         private const string ERROR_CorruptedMaterial = "Corrupted material";
         #endregion
 
@@ -125,14 +126,34 @@ namespace Interhaptics.Platforms.Mobile
         /// </summary>
         [SerializeField] private HapticMaterial[] materials = null;
 
-        protected List<MaterialInfos> _loadedMaterials = new List<MaterialInfos>();
+        [SerializeField] private bool debugLegacy = false;
+
+		protected List<MaterialInfos> _loadedMaterials = new List<MaterialInfos>();
         #endregion
 
         #region Life Cycle
         protected virtual void Awake()
         {
-            #if !UNITY_EDITOR_OSX
-            if (materials != null)
+#if !ENABLE_IL2CPP && (UNITY_ANDROID || UNITY_EDITOR)
+            HapticManager.Instance.monoScriptingBackend = true;
+			if (HapticManager.Instance.monoScriptingBackend)
+			{
+				if (debugLegacy)
+                {
+					UnityEngine.Debug.Log(ERROR_MESSAGE_MONO + "Haptic Source Legacy");
+				}
+				return;
+			}
+			else
+			{
+                if (debugLegacy)
+                {
+					UnityEngine.Debug.Log("IL2CPP Legacy");
+				}
+			}
+#endif
+#if !UNITY_EDITOR_OSX
+			if (materials != null)
             {
                 for (int i = 0; i < materials.Length; i++)
                 {

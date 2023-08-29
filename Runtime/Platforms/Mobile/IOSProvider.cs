@@ -57,7 +57,10 @@ namespace Interhaptics.Platforms.IOS
         public bool Init()
         {
             Core.HAR.AddBodyPart(Perception.Vibration, hand, 1, 1, 1, SAMPLERATE, true, true, true, false);
-            UnityEngine.Debug.Log("iOS haptic provider initialised");
+            if (HapticManager.Instance.DebugSwitch)
+			{
+                        UnityEngine.Debug.Log("iOS haptic provider started.");
+			}
             return true;
         }
 
