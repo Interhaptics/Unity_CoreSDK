@@ -1,3 +1,20 @@
+#2023.11.29
+# v1.3.0
++ Updated XInput provider to GameInput provider (GameInputProvider.dll supplants XInputProvider.dll) with XInput used as fallback. Vibrations can be mapped on left|right, trigger|body or whole controller for GameInput devices (e.g., XBox Controller - One, Series X, XBox compatible controllers: Razer Wolverine)
++ Exposed new methods from the Interhaptics Engine for Intensity Contro (Global, Haptic Source and Target)
++ HapticManager changed from MonoBehaviour to Static Class through Unity's PlayerLoop => There is no need to add the HapticManager component to a GameObject in your scene for haptics to function 
++ Parametric haptic effects implemented - ParametricHapticSource.cs
++ Main methods documented in HAR.Native.cs with Doxygen formatting
++ Looiping implementation: maximum loops and maximum loop time functionality across the board for Haptic Sources
++ StopAllHaptics and ResumeAllHaptics implemented in Global Intensity
++ Cleaned up legacy mobile pipeline as a result of changes in iOS 17
++ Improved haptic rendering for iOS
++ Corrected namespace for EventHapticSource - Interhaptics.Internal -> Interhaptics.Utils
++ Haptic compability check script added
++ Several QoL improvements in Editor scripts 
+
+---
+
 # 2023.08.28
 # v1.2.3
 
@@ -6,6 +23,8 @@
 + Fixed haptics playing on Pause/Not in Focus/Exit PlayMode
 + Debug switches added for Haptic Manager, Haptic Sources and Legacy Mobile Haptic Effects
 + Updated dlls  
+
+---
 
 # 2023.06.14
 # v1.2.2

@@ -3,75 +3,90 @@
 * ​
 */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Interhaptics;
 using System.Linq;
 using Interhaptics.HapticBodyMapping;
+using Interhaptics.Core;
+using System.Collections.Generic;
+using System.Collections;
 
-namespace Interhaptics.Internal
+namespace Interhaptics.Utils
 {
-    [AddComponentMenu("Interhaptics/EventHapticSource")]
-    public class EventHapticSource : Internal.HapticSource
-    {
-        public bool playOnStart;
-        public HapticBodyPart[] hapticBodyParts;
-        public float delayPlay = 0f;
-        public bool isPlaying = false;
+	[AddComponentMenu("Interhaptics/EventHapticSource")]
+	public class EventHapticSource : Internal.HapticSource
+	{
+		public HapticBodyPart[] hapticBodyParts;
 
-        private float timeHapticVibration;
-        private Coroutine playingCoroutine = null;
+#region Lifecycle
+		protected override void Start()
+		{
+			//AddTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
+			base.Start();
+		}
 
-        public override void Play()
-        {
+		protected override void Update()
+		{
+			base.Update();
+			//DebugMode("Target intensity changed to: " + targetIntensity);
+		}
+#endregion
+
+		public override void Play()
+		{
+			// Check if all HapticBodyParts have TargetIntensity set to 0, and if so, do not play.
+			if (hapticBodyParts.All(hbp => hbp.TargetIntensity == 0))
+			{
+				DebugMode("All TargetIntensity values are set to 0, not playing haptic effect.");
+				return; // Exit the method without playing.
+			}
 			AddTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
-            isPlaying = true;
 			base.Play();
-        }
+		}
 
-        public override void Stop()
-        {
-            //   RemoveTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
-#if !UNITY_PS5 //PS5 platform needs this commented out, otherwise residual haptics and no haptic playback until provider update
-            isPlaying = false;
-            base.Stop();
+		public override void Stop()
+		{
+#if !UNITY_PS5 //PS5 platform needs this commented out, otherwise residual haptics and no haptic playback until provider update - TODO: remove this when PS5 provider is updated
+			base.Stop();
+			//RemoveTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
 #endif
-        }
+		}
 
-        private void Start()
-        {
-            AddTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
-            timeHapticVibration = (float)Interhaptics.Core.HAR.GetVibrationLength(HapticMaterialId);
-            if (playOnStart)
-            {
-                 playingCoroutine = StartCoroutine(ControlVibration());
-            }
-        }
+		// Use the base class's coroutine for looping
+		public override void PlayEventVibration()
+		{
+			base.PlayEventVibration();
+		}
 
-        public void PlayEventVibration()
-        {
-            if (playingCoroutine != null)
-            {
-                StopCoroutine(playingCoroutine);
-            }
-            playingCoroutine = StartCoroutine(ControlVibration());
-        }
+		public override IEnumerator ControlVibration()
+		{
+			yield return new WaitForSeconds(vibrationOffset);
+			DebugMode(string.Format("Started playing haptics! + {0}", Time.time));
+			int loopsPlayed = 0;
+			float loopStartTime = Time.time;
+			float totalTimePlayed = 0f;
+			int maxComputedLoops = maxLoops > 0 ? maxLoops : int.MaxValue;
+			Debug.Log ("maxComputedLoops: " + maxComputedLoops + " " + hapticMaterial.name);
 
-        /// <summary>
-        /// Controls the vibration perception based on the full length of the haptic material; stops any residual haptics which might come from the controller after the haptic playback length
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator ControlVibration() //move to HapticSource
-        {
-            yield return new WaitForSeconds(delayPlay);
-            DebugMode(string.Format("Started playing haptics! + {0}", Time.time));
-            Play();
-            yield return new WaitForSeconds(timeHapticVibration);
-            DebugMode(string.Format("Finished playing haptics at timestamp : + {0} at {1}", timeHapticVibration, Time.time));
-            Stop();
-            playingCoroutine = null;
-        }
-    }
+			while (loopsPlayed < maxComputedLoops)
+			{
+				Play(); // Play audio and haptic effect
+				loopsPlayed++;
+				DebugMode($"Loop {loopsPlayed} start at {Time.time}");
 
+				// Wait for the haptic effect duration to finish before restarting
+				yield return new WaitForSeconds((float)hapticEffectDuration);
+				totalTimePlayed = maxComputedLoops * (float)hapticEffectDuration;
+
+				// Check if the maxLoops condition has been met
+				if (loopsPlayed >= maxComputedLoops)
+				{
+					DebugMode($"Max loops reached: {loopsPlayed} loops at {Time.time}");
+					break;
+				}
+			}
+			isPlaying = false;
+			DebugMode($"Finished playing haptics at {Time.time} after {totalTimePlayed} seconds");
+			playingCoroutine = null;
+		}
+	}
 }

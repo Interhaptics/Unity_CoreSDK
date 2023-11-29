@@ -3,9 +3,7 @@
 * ​
 */
 
-using Interhaptics.Internal;
 using Interhaptics.Utils;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +20,13 @@ namespace Interhaptics.Samples
 			{
 				if (eventHapticSource.isPlaying)
 				{
-					eventHapticSource.Stop();
+					Core.HAR.StopEvent(eventHapticSource.HapticMaterialId);
+					if (eventHapticSource.playingCoroutine != null)
+					{
+						eventHapticSource.StopCoroutine(eventHapticSource.playingCoroutine);
+					}
+					eventHapticSource.playingCoroutine = null;
+					eventHapticSource.isPlaying = false;
 					break;
 				}
 			}

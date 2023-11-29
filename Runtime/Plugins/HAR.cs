@@ -79,6 +79,11 @@ namespace Interhaptics.Core
             RemoveTargetFromEventMarshal(_hMaterialId, _target.ToArray(), _target.Count);
         }
 
+        public static void SetTargetIntensity(int _hMaterialId, List<CommandData> _target, double _intensity)
+        {
+			SetTargetIntensityMarshal(_hMaterialId, _target.ToArray(), _target.Count, _intensity);
+		}
+
     }
 
 }

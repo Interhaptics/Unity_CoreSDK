@@ -1,10 +1,10 @@
-﻿/* ​
+﻿
+/* ​
 * Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 
 #if UNITY_IOS && !UNITY_EDITOR
-
 using UnityEngine;
 using Interhaptics.HapticBodyMapping;
 using Interhaptics.Platforms.Mobile.Tools;
@@ -57,7 +57,7 @@ namespace Interhaptics.Platforms.IOS
         public bool Init()
         {
             Core.HAR.AddBodyPart(Perception.Vibration, hand, 1, 1, 1, SAMPLERATE, true, true, true, false);
-            if (HapticManager.Instance.DebugSwitch)
+            if (HapticManager.DebugSwitch)
 			{
                         UnityEngine.Debug.Log("iOS haptic provider started.");
 			}
@@ -93,7 +93,7 @@ namespace Interhaptics.Platforms.IOS
             double[] outputBufferVibrationTransient = null;
 
             int sizeAmpVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Amplitude);
-
+            /* removed in iphone_fix branch - TODO: check if this is needed
             if (sizeAmpVibration <= 0)
             {
                 return;
@@ -101,7 +101,7 @@ namespace Interhaptics.Platforms.IOS
 
 
             //if amplitude buffer not null
-
+            */
             int sizeFreqVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Frequency);
             int sizeTransientVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Transient);
 

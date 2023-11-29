@@ -23,24 +23,23 @@ namespace Interhaptics
 
         public PlayMethod playMethod;
         
-        [HideInInspector]
-        public float timeHapticVibration;
-        
-        protected virtual void Start()
+        protected override  void Start()
         {
-            timeHapticVibration = (float)Interhaptics.Core.HAR.GetVibrationLength(HapticMaterialId);
+            isLooping = false;
+            playAtStart = false;
+            base.Start();
         }
 
         /// <summary>
         /// Controls the vibration perception based on the full length of the haptic material; stops any residual haptics which might come from the controller after the haptic playback length
         /// </summary>
         /// <returns></returns>
-        public IEnumerator ControlVibration()
+        public override IEnumerator ControlVibration()
         {
             DebugMode(string.Format("Started playing  haptics! + {0}",Time.time));
             Play();
-            yield return new WaitForSeconds(timeHapticVibration);
-            DebugMode(string.Format("Finished playing haptics at timestamp : + {0} at {1}", timeHapticVibration, Time.time));
+            yield return new WaitForSeconds((float)hapticEffectDuration);
+            DebugMode(string.Format("Finished playing haptics at timestamp : + {0} at {1}", hapticEffectDuration, Time.time));
         }
 
 #if UNITY_EDITOR
@@ -67,10 +66,12 @@ namespace Interhaptics
 
         public void AddTarget(GameObject target)
         {
-            if (target.TryGetComponent(out HapticBodyPart hbp))
+            if (target.TryGetComponent(out HapticBodyPart hapticBodyPart))
             {
-                AddTarget(hbp.ToCommandData());
-            }
+				hapticBodyPart.HapticMaterialId = this.HapticMaterialId;
+				AddTarget(hapticBodyPart.ToCommandData());
+				hapticBodyPart.UpdateTargetIntensity(hapticBodyPart.TargetIntensity); // Update the target intensity when adding the target
+			}
         }
 
         public void RemoveTarget(GameObject target)
@@ -84,7 +85,7 @@ namespace Interhaptics
         protected virtual void OnCollisionEnter(Collision other)
         {
             if ((playMethod == PlayMethod.OnCollision)&&(other.gameObject.GetComponent<HapticBodyPart>() != null))
-            {  
+            {
                 ActivateHaptics(other.gameObject);
             }
         }
@@ -100,7 +101,7 @@ namespace Interhaptics
         private void ActivateHaptics(GameObject other)
         {
             AddTarget(other);
-            if (timeHapticVibration > 0)
+            if (hapticEffectDuration > 0)
             {
                 StartCoroutine(ControlVibration());
             }

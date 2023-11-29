@@ -30,7 +30,7 @@ namespace Interhaptics.Samples
 		{
 			audioManagerMobile.StopPlayingAudioHapticSources();
 			Interhaptics.Core.HAR.ClearActiveEvents();
-			audioHapticSource.Play();
+			audioHapticSource.PlayEventVibration();
 		}
 
 		public void StopHaptics()

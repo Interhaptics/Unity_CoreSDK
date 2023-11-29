@@ -34,20 +34,20 @@ namespace Interhaptics.Samples
         {
             DebugMode(string.Format("Started playing  haptics! + {0}", Time.time));
             Play();
-            yield return new WaitForSeconds(timeHapticVibration);
+            yield return new WaitForSeconds((float)hapticEffectDuration);
             RemoveTarget(hbp);
-            DebugMode(string.Format("Finished playing haptics at timestamp : + {0} at {1}", timeHapticVibration, Time.time));
+            DebugMode(string.Format("Finished playing haptics at timestamp : + {0} at {1}", hapticEffectDuration, Time.time));
         }
 
         protected override void OnCollisionEnter(Collision other)
         {
-            DebugMode("Collision:" + timeHapticVibration + other.gameObject);
+            DebugMode("Collision:" + hapticEffectDuration + other.gameObject);
             ActivateHaptics(other.gameObject);
         }
 
         protected override void OnTriggerEnter(Collider other)
         {
-            DebugMode("Trigger:" + timeHapticVibration + other.gameObject);
+            DebugMode("Trigger:" + hapticEffectDuration + other.gameObject);
             ActivateHaptics(other.gameObject);
         }
 
@@ -57,7 +57,7 @@ namespace Interhaptics.Samples
             {
                 AddTarget(other);
             }
-            if (timeHapticVibration > 0)
+            if (hapticEffectDuration > 0)
             {
                 StartCoroutine(XRControlVibration(other));
             }

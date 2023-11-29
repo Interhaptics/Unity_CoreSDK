@@ -57,13 +57,13 @@ namespace Interhaptics.Platforms.Android
         {
         #if !ENABLE_IL2CPP && UNITY_ANDROID && !UNITY_EDITOR
         UnityEngine.Debug.LogError("Interhaptics requires IL2CPP scripting backend for Android. Please change it in Player Settings. Haptics will not play on the Mono scripting backend on the Android platform." + "Source: Android Provider");
-        HapticManager.Instance.monoScriptingBackend = true;
+        HapticManager.MonoScriptingBackend = true;
         return false;
         #endif
 
             Interhaptics.Platforms.Mobile.GenericAndroidHapticAbstraction.Initialize();
             Core.HAR.AddBodyPart(Perception.Vibration, Hand, 1, 1, 1, SAMPLERATE, false, false, false, false);
-            if (HapticManager.Instance.DebugSwitch)
+            if (HapticManager.DebugSwitch)
 			{
             UnityEngine.Debug.Log("Android haptic provider started.");
             }

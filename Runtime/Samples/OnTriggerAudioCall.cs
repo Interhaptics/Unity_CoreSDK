@@ -17,7 +17,7 @@ namespace Interhaptics.Samples
 
         private void OnTriggerEnter(Collider other)
         {
-            audioHapticSource.Play();
+            audioHapticSource.PlayEventVibration();
         }
 
         private void OnTriggerExit(Collider other)

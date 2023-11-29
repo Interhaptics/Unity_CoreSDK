@@ -4,7 +4,7 @@
 */
 
 using UnityEngine;
-using Interhaptics.Internal;
+using Interhaptics.Utils;
 
 namespace Interhaptics.Samples
 {

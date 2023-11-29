@@ -6,7 +6,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Interhaptics.Internal;
+using Interhaptics.Utils;
 
 namespace Interhaptics.Samples
 {
@@ -19,7 +19,7 @@ namespace Interhaptics.Samples
 
         private void OnTriggerEnter(Collider other)
         {
-            eventHapticSource.delayPlay = delayPlayTime;
+            eventHapticSource.vibrationOffset = delayPlayTime;
             eventHapticSource.PlayEventVibration();
         }
     }
