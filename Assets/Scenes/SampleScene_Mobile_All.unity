@@ -4172,7 +4172,7 @@ MonoBehaviour:
   maxLoops: 2
   maxLoopTime: 10
   targetIntensity: 1
-  playAtStart: 1
+  playAtStart: 0
   isPlaying: 0
   hapticEffectDuration: 0
   loopStartTime: 0
@@ -4195,8 +4195,8 @@ MonoBehaviour:
   - time: 4
     amplitude: 1
     frequency: 1
-  pitchMin: 0
-  pitchMax: 1
+  pitchMin: 60
+  pitchMax: 300
   transients: []
   hapticBodyParts:
   - {fileID: 1587268629}

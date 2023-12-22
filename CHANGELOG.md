@@ -1,3 +1,15 @@
+#2023.12.22
+# v1.4.0
++ Added various API to play simple effects
+    + PlayHapticEffect()
+    + PlayConstant()
+    + PlayTransient()
+    + Play()
+    + PlayAdvanced()
+    + PlayHapticPreset()
+
+---
+
 #2023.11.29
 # v1.3.0
 + Updated XInput provider to GameInput provider (GameInputProvider.dll supplants XInputProvider.dll) with XInput used as fallback. Vibrations can be mapped on left|right, trigger|body or whole controller for GameInput devices (e.g., XBox Controller - One, Series X, XBox compatible controllers: Razer Wolverine)

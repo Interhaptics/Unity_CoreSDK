@@ -5,27 +5,36 @@
 
 namespace Interhaptics.HapticBodyMapping
 {
-
-    public enum Perception
+	/// <summary>
+	/// Enumeration for different types of haptic perceptions.
+	/// </summary>
+	public enum Perception
     {
-        None = -1,
-        Stiffness = 0,
-        Texture = Stiffness + 1,
-        Vibration = Texture + 1,
-        AllPerception = Vibration + 1
-    };
+        None = -1,                      ///< No perception.
+		Stiffness = 0,                  ///< Stiffness perception.
+		Texture = Stiffness + 1,        ///< Texture perception.
+		Vibration = Texture + 1,        ///< Vibration perception.
+		AllPerception = Vibration + 1   ///< All types of perceptions.
+	};
 
-    public enum BufferDataType
+	/// <summary>
+	/// Enumeration for types of haptic buffer data.
+	/// </summary>
+	public enum BufferDataType
     {
-        Amplitude = 0,
-        PCM = 0,
-        Frequency = 1,
-        Transient = 2
-    };
+        Amplitude = 0,      ///< Data type for amplitude.
+		PCM = 0,            ///< PCM data type, same as amplitude.
+		Frequency = 1,      ///< Data type for frequency.
+		Transient = 2       ///< Data type for transient.
+	};
 
-    public enum BodyPartID
+	/// <summary>
+	/// Enumeration for identifying different body parts for haptic effects.
+	/// </summary>
+	public enum BodyPartID
     {
-        Bp_None = -1,
+		// List of all body parts with specific identifiers - 56 bodyparts
+		Bp_None = -1,
 
         Bp_Chest = 340,
         Bp_Waist = 325,
@@ -103,14 +112,20 @@ namespace Interhaptics.HapticBodyMapping
         Bp_Right_pinky_third = 158, //56 bodyparts
     };
 
-    public enum Operator
+	/// <summary>
+	/// Enumeration for operator signs in haptic command data.
+	/// </summary>
+	public enum Operator
     {
         Minus = -1,
         Neutral = 0,
         Plus = 1,
     };
 
-    public enum LateralFlag
+	/// <summary>
+	/// Enumeration for lateral flag in haptic command data.
+	/// </summary>
+	public enum LateralFlag
     {
         Unknown_position = -1,
         Global = 0,
@@ -119,7 +134,10 @@ namespace Interhaptics.HapticBodyMapping
         Center = 3
     };
 
-    public enum GroupID
+	/// <summary>
+	/// Enumeration for group identification in haptic command data.
+	/// </summary>
+	public enum GroupID
     {
         Unknown = -1,
 
@@ -164,7 +182,10 @@ namespace Interhaptics.HapticBodyMapping
         Third = 602,
     };
 
-    public struct CommandData
+	/// <summary>
+	/// Structure for command data in haptic systems.
+	/// </summary>
+	public struct CommandData
     {
 
         public CommandData(Operator _sign, GroupID _group, LateralFlag _side = LateralFlag.Global)
@@ -177,17 +198,17 @@ namespace Interhaptics.HapticBodyMapping
         // Variables ------------------------------------------------------------------------------------
 
         /// <summary>
-        /// sign of the operation (+/-)
+        /// Sign of the operation (+/-)
         /// </summary>
         public Operator Sign;
 
-        /// <summary>
-        /// group targeted
-        /// </summary>
-        public GroupID Group;
+		/// <summary>
+		/// Targeted group.
+		/// </summary>
+		public GroupID Group;
 
         /// <summary>
-        /// Side targeted
+        /// Targeted side.
         /// </summary>
         public LateralFlag Side;
 

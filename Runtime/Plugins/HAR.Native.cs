@@ -15,10 +15,13 @@ namespace Interhaptics.Core
         const string DLL_NAME = "__Internal";
         #else
         const string DLL_NAME = "HAR";
-        #endif
+#endif
 
 		/// <summary>
 		/// Initializes the different components and modules of the Interhaptics Engine.
+		/// - Haptic Material Manager: module in charge of loading and storing haptic effects
+		/// - Human Avatar Manager: module in charge of mapping between device, human avatar, and experience
+		/// - Haptic Event Manager: module in charge of the control of haptic sources
 		/// </summary>
 		/// <returns>Always true even if a module is not properly initialized.</returns>
 		[DllImport(DLL_NAME)]

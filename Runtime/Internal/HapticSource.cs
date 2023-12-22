@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using Interhaptics.Core;
 using Interhaptics.Utils;
 using System.Collections;
+using System.IO;
+using System;
 
 namespace Interhaptics.Internal
 {
@@ -17,7 +19,6 @@ namespace Interhaptics.Internal
 		[Header("Haptic Effect File")]
 		[SerializeField]
         public HapticMaterial hapticMaterial;
-
 		[Header("Haptic Source Settings")]
 		[Range(0, 2)]
 		[SerializeField]
@@ -72,6 +73,10 @@ namespace Interhaptics.Internal
 			}
 		}
 
+		#region Lifecycle
+		/// <summary>
+		/// Add the haptic material to the when the object is created
+		/// </summary>
 		protected virtual void Awake()
 		{
 #if UNITY_ANDROID
@@ -85,9 +90,19 @@ namespace Interhaptics.Internal
                 DebugMode("IL2CPP Haptic Source");
             }
 #endif
-			HapticMaterialId = Core.HAR.AddHM(hapticMaterial);
+			if (hapticMaterial != null)
+			{
+				HapticMaterialId = Core.HAR.AddHM(hapticMaterial);
+			}
+			else
+			{
+			DebugMode("No haptic effect provided. Please assign a HapticMaterial in the inspector or provide a path to a haptic effect file in the StreamingAssets directory.");
+			}
 		}
 
+		/// <summary>
+		/// Initialize the haptic effect settings at the start of the game
+		/// </summary>
 		protected virtual void Start()
 		{
 			// Initialize the haptic effect at the start of the game
@@ -124,6 +139,10 @@ namespace Interhaptics.Internal
 				playingCoroutine = StartCoroutine(ControlVibration());
 			}
 		}
+
+		/// <summary>
+		/// Update the haptic effect settings at every frame
+		/// </summary>
 		protected virtual void Update()
 		{
 			if (sourceIntensity != currentSourceIntensity)
@@ -134,24 +153,33 @@ namespace Interhaptics.Internal
 			}
         }
 
+#endregion
+
 		public virtual void ApplyTargetIntensity()
 		{
 			//Empty for now
 		}
 
-		// Call this method to apply the source intensity
+		/// <summary>
+		/// Call this method to apply the source intensity
+		/// </summary>
 		public void ApplySourceIntensity()
 		{
 			HAR.SetEventIntensity(HapticMaterialId, sourceIntensity);
 		}
-
-		// Call this method to apply the looping state
+		/// <summary>
+		/// Call this method to apply the looping state
+		/// </summary>
 		public void ApplyLooping(bool loopValue)
 		{
 			DebugMode("Applied looping: " + loopValue);
 			HAR.SetEventLoop(HapticMaterialId, loopValue);
 		}
 
+		/// <summary>
+		/// Debug method to print messages in the console only when debugMode is enabled
+		/// </summary>
+		/// <param name="debugMessage"></param>
 		public void DebugMode(string debugMessage)
         {
             if (debugMode)
@@ -160,12 +188,18 @@ namespace Interhaptics.Internal
             }
         }
 
+		/// <summary>
+		/// Call this method to play the haptic effect
+		/// </summary>
 		public virtual void Play()
         {
 			isPlaying = true;
             Core.HAR.PlayEvent(HapticMaterialId, -Time.realtimeSinceStartup + vibrationOffset, textureOffset, stiffnessOffset);
         }
 
+		/// <summary>
+		/// Call this method to stop the haptic effect
+		/// </summary>
         public virtual void Stop()
         {
 			isPlaying = false;
@@ -177,17 +211,26 @@ namespace Interhaptics.Internal
 			}
 		}
 
+		/// <summary>
+		/// Call this method to add a target to the haptic effect
+		/// </summary>
+		/// <param name="Target"></param>
         public void AddTarget(List<HapticBodyMapping.CommandData> Target)
         {
             Core.HAR.AddTargetToEvent(HapticMaterialId, Target);
         }
 
+		/// <summary>
+		/// Call this method to remove a target from the haptic effect
+		/// </summary>
+		/// <param name="Target"></param>
         public void RemoveTarget(List<HapticBodyMapping.CommandData> Target)
         {
             Core.HAR.RemoveTargetFromEvent(HapticMaterialId, Target);
         }
-
-		// Method to start the coroutine from outside (if necessary)
+		/// <summary>
+		/// Method to start the coroutine from outside (if necessary). Plays the haptic effect after the vibrationOffset
+		/// </summary>
 		public virtual void PlayEventVibration()
 		{
 			if (playingCoroutine != null)

@@ -59,12 +59,12 @@ namespace Interhaptics.Utils
 //Resulting Pitch Array
 		[HideInInspector]
 		private double[] pitch;
-		[Tooltip("Minimum value for the pitch range.")]
+		[Tooltip("Minimum value for the pitch range. Default 60")]
 		[SerializeField]
-		private double pitchMin = 0.0;
-		[Tooltip("Maximum value for the pitch range.")]
+		private double pitchMin = 60.0;
+		[Tooltip("Maximum value for the pitch range. Default 300")]
 		[SerializeField]
-		private double pitchMax = 1.0;
+		private double pitchMax = 300.0;
 //Resulting Transient Array
 		[HideInInspector]
 		[SerializeField]

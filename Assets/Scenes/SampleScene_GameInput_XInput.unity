@@ -507,6 +507,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 111034637}
   m_CullTransparentMesh: 1
+--- !u!1 &129170371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 129170373}
+  - component: {fileID: 129170372}
+  m_Layer: 0
+  m_Name: HapticEffectCodeTester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &129170372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129170371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afac1ef078f4742448243b6fa4f82ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hapticMaterial: {fileID: -6750239444755058063, guid: cac8514344e34bd49ab98c6025ed4783, type: 3}
+  intensity: 1
+--- !u!4 &129170373
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129170371}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1211.2048, y: 260.04077, z: 4.517029}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &159547130
 GameObject:
   m_ObjectHideFlags: 0
@@ -2831,6 +2877,7 @@ GameObject:
   - component: {fileID: 770161736}
   - component: {fileID: 770161737}
   - component: {fileID: 770161738}
+  - component: {fileID: 770161739}
   m_Layer: 0
   m_Name: HapticManager
   m_TagString: Untagged
@@ -2917,6 +2964,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 0
+--- !u!114 &770161739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770161733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd05f3b8c2782b4e9c46f356dcb0261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliders:
+  - {fileID: 519160610}
+  - {fileID: 1625163855}
+  - {fileID: 588112182}
+  - {fileID: 1534475556}
+  activeColor: {r: 1, g: 0, b: 0, a: 1}
+  activeKnobColor: {r: 0, g: 0, b: 0, a: 0.5}
+  inactiveColor: {r: 1, g: 1, b: 1, a: 1}
+  inactiveKnobColor: {r: 1, g: 1, b: 1, a: 1}
+  transitionDelay: 0.5
 --- !u!1 &801360625
 GameObject:
   m_ObjectHideFlags: 0
@@ -3996,10 +4065,8 @@ MonoBehaviour:
   - time: 4
     amplitude: 1
     frequency: 1
-  amplitude: []
-  pitch: []
-  pitchMin: 0
-  pitchMax: 1
+  pitchMin: 60
+  pitchMax: 300
   transients: []
   hapticBodyParts:
   - {fileID: 1125245996}
@@ -4329,7 +4396,7 @@ GameObject:
   - component: {fileID: 1415095010}
   - component: {fileID: 1415095011}
   m_Layer: 0
-  m_Name: Door_Knob
+  m_Name: Footsteps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4362,7 +4429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb260b5179d54554bba4b12719baf5d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hapticMaterial: {fileID: -6750239444755058063, guid: 082b301c30d08e74fa838aef8372c6a3, type: 3}
+  hapticMaterial: {fileID: 0}
   sourceIntensity: 1
   vibrationOffset: 0
   debugMode: 0
@@ -6023,16 +6090,18 @@ TextMesh:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1916470442}
   m_Text: "Cycle between Audio, Event and Spatial Haptic Sources by pressing D-Pad
-    up or down.\nActivate haptic effects by pressing: \n- Triangle, Square, Circle,
-    or Cross buttons (PS4/PS5 controllers)\n- A,B,X,Y buttons (XBox controllers)\n-
-    Shoulder Left/Right Button (XBox controllers)"
+    up or down.\nControl the intensity with the left thumbstick up/down direction.\nCycle
+    through intensity controls with the right thumbstick up/down direction.\nActivate
+    haptic effects by pressing: \n- Triangle, Square, Circle, or Cross buttons (PS4/PS5
+    controllers)\n- A,B,X,Y buttons (XBox controllers)\n- Shoulder Left/Right Button
+    (XBox controllers)"
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
   m_Anchor: 1
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 32
+  m_FontSize: 26
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}

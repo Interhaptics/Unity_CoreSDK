@@ -15,10 +15,12 @@ using UnityEngine.Experimental.PlayerLoop;
 
 namespace Interhaptics
 {
+	/// <summary>
+	/// Unity PlayerLoop use structure types to identify the different life cycles configured
+	/// The following structure are custom made to identify the Interhaptics cycles
+	/// </summary>
 
-    // Unity PlayerLoop use structure types to identify the different life cycles configured
-    // The following structure are custom made to identify the Interhaptics cycles
-    internal struct InterhapticsPlayerLoop
+	internal struct InterhapticsPlayerLoop
     {
         // Replace the rendering loop cycle used previously
         internal struct UpdateHaptic { }
@@ -28,10 +30,17 @@ namespace Interhaptics
     {
 
         private const float FIXED_TIMEFRAME = 0.03f;
-
+        /// <summary>
+        /// Debug switch to enable or disable the debug mode
+        /// </summary>
         public static bool DebugSwitch { get; set; } = false;
+        /// <summary>
+        /// Switch to enable or disable the haptic rendering on Android if the platform is not supported
+        /// </summary>
         public static bool MonoScriptingBackend { get; internal set; } = false;
-		// New variable to control stopping haptics on focus loss or pause, default set to true.
+		/// <summary>
+		/// New variable to control stopping haptics on focus loss or pause, default set to true.
+		/// </summary>
 		public static bool StopHapticsOnFocusLoss { get; set; } = true;
 		private static float lastCall = 0;
 
