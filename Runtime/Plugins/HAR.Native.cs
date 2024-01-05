@@ -11,7 +11,7 @@ namespace Interhaptics.Core
     public static partial class HAR
     {
 
-        #if UNITY_IOS && !UNITY_EDITOR
+        #if (UNITY_IOS || UNITY_SWITCH) && !UNITY_EDITOR
         const string DLL_NAME = "__Internal";
         #else
         const string DLL_NAME = "HAR";
