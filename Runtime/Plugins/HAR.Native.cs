@@ -1,5 +1,5 @@
 ﻿/* ​
-* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
+* Copyright (c) 2024 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 
@@ -10,10 +10,209 @@ namespace Interhaptics.Core
 {
     public static partial class HAR
     {
+#if UNITY_EDITOR_OSX
+        // Implementation for UNITY_EDITOR_OSX
+        // Methods will have dummy or macOS-specific implementations
 
-        #if (UNITY_IOS || UNITY_SWITCH) && !UNITY_EDITOR
+        public static bool Init()
+        {
+            UnityEngine.Debug.LogWarning("Unity Editor in iOS will have dummy implementation of the Interhaptics Engine. To correctly debug in editor use a Windows version of the Editor.");
+            // Dummy implementation for macOS Unity Editor
+            return false;
+        }
+
+        public static void Quit()
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void SetGlobalIntensity(double _intensity)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static double GetGlobalIntensity()
+        {
+            // Dummy implementation for macOS Unity Editor
+            return 1.0;
+        }
+
+        public static int AddParametricEffect([In] double[] _amplitude, int _amplitudeSize, [In] double[] _pitch, int _pitchSize, double _freqMin, double _freqMax, [In] double[] _transient, int _transientSize, bool _isLooping)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static void SetEventIntensity(int _hMaterialId, double _intensity)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void SetEventLoop(int _hMaterialId, bool _isLooping)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void SetTargetIntensityMarshal(int _hMaterialId, Interhaptics.HapticBodyMapping.CommandData[] _target, int _size, double _intensity)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        private static int AddHM(string _content)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        private static bool UpdateHM(int _id, string _content)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return false;
+        }
+
+        public static double GetVibrationAmp(int _id, double _step, int _mode = 0)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static double GetVibrationFreq(int _id, double _step)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static double GetVibrationLength(int _id)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static double GetTextureAmp(int _id, double _step, int _mode = 0)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static double GetTextureFreq(int _id, double _step)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static double GetTextureLength(int _id)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static double GetStiffnessAmp(int _id, double _step)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static double GetStiffnessFreq(int _id, double _step)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static int GetOutputBufferSize(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static void GetOutputBuffer(double[] _outputBuffer, int _bufferSize, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static ulong GetVectorStartingTime(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return 0;
+        }
+
+        public static void AddBodyPart(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension, double _sampleRate, bool _hd, bool _splitFrequency, bool _splitTransient, bool realTime)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void DeleteBodyPart(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void PlayEvent(int _hMaterialId, double _vibrationOffset, double _textureOffset, double _stiffnessOffset)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void StopEvent(int _hMaterialId)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void StopAllEvents()
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void ClearActiveEvents()
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void ClearInactiveEvents()
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void ClearEvent(int _hMaterialId)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void SetEventOffsets(int _hMaterialId, double _vibrationOffset, double _textureOffset, double _stiffnessOffset)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        private static void UpdateEventPositionsMarshal(int _hMaterialId, Interhaptics.HapticBodyMapping.CommandData[] _target, int _size, double _texturePosition, double _stiffnessPosition)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void ComputeAllEvents(double _curTime)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        private static void AddTargetToEventMarshal(int _hMaterialId, Interhaptics.HapticBodyMapping.CommandData[] _target, int _size)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        private static void RemoveTargetFromEventMarshal(int _hMaterialId, Interhaptics.HapticBodyMapping.CommandData[] _target, int _size)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        public static void RemoveAllTargetsFromEvent(int _hMaterialId)
+        {
+            // Dummy implementation for macOS Unity Editor
+        }
+
+        // ... other methods if needed
+
+#else
+
+
+#if (UNITY_IOS || UNITY_SWITCH) && !UNITY_EDITOR
         const string DLL_NAME = "__Internal";
-        #else
+#else
         const string DLL_NAME = "HAR";
 #endif
 
@@ -51,14 +250,14 @@ namespace Interhaptics.Core
 		/// <param name="_amplitudeSize">Size of the amplitude array.</param>
 		/// <param name="_pitch">Array of pitch values formatted as Time - Value pairs, with values between 0 and 1.</param>
 		/// <param name="_pitchSize">Size of the pitch array.</param>
-		/// <param name="_pitchMin">Minimum value for the pitch range.</param>
-		/// <param name="_pitchMax">Maximum value for the pitch range.</param>
+		/// <param name="_freqMin">Minimum value for the frequency range.</param>
+		/// <param name="_freqMax">Maximum value for the frequency range.</param>
 		/// <param name="_transient">Array of transient values formatted as Time - Amplitude - Frequency triples, with values between 0 and 1.</param>
 		/// <param name="_transientSize">Size of the transient array.</param>
 		/// <param name="_isLooping">Indicates whether the effect should loop.</param>
 		/// <returns>ID of the created haptic source, or -1 if creation failed.</returns>
 		[DllImport(DLL_NAME)]
-		public static extern int AddParametricEffect([In] double[] _amplitude, int _amplitudeSize, [In] double[] _pitch, int _pitchSize, double _pitchMin, double _pitchMax, [In] double[] _transient, int _transientSize, bool _isLooping);
+		public static extern int AddParametricEffect([In] double[] _amplitude, int _amplitudeSize, [In] double[] _pitch, int _pitchSize, double _freqMin, double _freqMax, [In] double[] _transient, int _transientSize, bool _isLooping);
 		/// <summary>
 		/// Sets the haptic intensity factor for a specific source.
 		/// </summary>
@@ -226,6 +425,8 @@ namespace Interhaptics.Core
 		/// <param name="_hMaterialId">ID of the source to remove targets from. Same as the attached haptic effect.</param>
 		[DllImport(DLL_NAME)]
         public static extern void RemoveAllTargetsFromEvent(int _hMaterialId);
+
+#endif
 
     }
 

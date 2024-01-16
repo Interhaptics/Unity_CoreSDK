@@ -1,3 +1,10 @@
+#2024.01.16
+# v1.5.0
++ Added support to Sensa HD Haptics platform
++ Fixed error logging in MacOS Editor play mode
+
+---
+
 #2023.12.22
 # v1.4.0
 + Added various API to play simple effects

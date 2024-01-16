@@ -1,5 +1,5 @@
 ﻿/* ​
-* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
+* Copyright (c) 2024 Go Touch VR SAS. All rights reserved. ​
 * ​
 */
 
@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using Interhaptics.Core;
 using Interhaptics.Utils;
 using System.Collections;
-using System.IO;
 using System;
 
 namespace Interhaptics.Internal

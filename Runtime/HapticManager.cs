@@ -54,6 +54,10 @@ namespace Interhaptics
             UnityEditor.EditorApplication.pauseStateChanged += OnPauseStateChanged;
 #endif
 
+#if UNITY_EDITOR_OSX
+            UnityEngine.Debug.LogWarning("Unity Editor in iOS will have dummy implementation of the Interhaptics Engine. To correctly debug in Unity use a Windows version of the Unity Editor.");
+#endif
+
 #if !UNITY_EDITOR_OSX
             Core.HAR.Init();
             Internal.HapticDeviceManager.DeviceInitLoop();

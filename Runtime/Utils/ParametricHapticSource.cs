@@ -59,12 +59,12 @@ namespace Interhaptics.Utils
 //Resulting Pitch Array
 		[HideInInspector]
 		private double[] pitch;
-		[Tooltip("Minimum value for the pitch range. Default 60")]
+		[Tooltip("Minimum value for the frequency range. Default 60")]
 		[SerializeField]
-		private double pitchMin = 60.0;
-		[Tooltip("Maximum value for the pitch range. Default 300")]
+		private double freqMin = 60.0;
+		[Tooltip("Maximum value for the frequency range. Default 300")]
 		[SerializeField]
-		private double pitchMax = 300.0;
+		private double freqMax = 300.0;
 //Resulting Transient Array
 		[HideInInspector]
 		[SerializeField]
@@ -101,7 +101,6 @@ namespace Interhaptics.Utils
 			{
 				PlayEventVibration();
 			}
-			//*/
 		}
 
 		public bool InitializeParametricHapticSource()
@@ -117,7 +116,7 @@ namespace Interhaptics.Utils
 			HapticMaterialId = HAR.AddParametricEffect(
 				amplitude, amplitude?.Length ?? 0,
 				pitch, pitch?.Length ?? 0,
-				pitchMin, pitchMax,
+				freqMin, freqMax,
 				transients, transients?.Length ?? 0,
 				isLooping
 			);

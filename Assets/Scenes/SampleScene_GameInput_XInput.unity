@@ -4042,7 +4042,7 @@ MonoBehaviour:
   maxLoops: 3
   maxLoopTime: 10
   targetIntensity: 1
-  playAtStart: 0
+  playAtStart: 1
   isPlaying: 0
   hapticEffectDuration: 0
   loopStartTime: 0
@@ -4065,8 +4065,8 @@ MonoBehaviour:
   - time: 4
     amplitude: 1
     frequency: 1
-  pitchMin: 60
-  pitchMax: 300
+  freqMin: 60
+  freqMax: 300
   transients: []
   hapticBodyParts:
   - {fileID: 1125245996}
@@ -4429,7 +4429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb260b5179d54554bba4b12719baf5d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hapticMaterial: {fileID: 0}
+  hapticMaterial: {fileID: -6750239444755058063, guid: 053a9b1311bcabc46a9c85556bbf3716, type: 3}
   sourceIntensity: 1
   vibrationOffset: 0
   debugMode: 0
