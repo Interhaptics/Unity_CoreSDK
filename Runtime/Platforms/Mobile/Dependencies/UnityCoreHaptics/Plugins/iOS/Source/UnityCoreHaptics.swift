@@ -176,11 +176,12 @@ import UnityFramework_CoreHapticsPrivate
 
     @objc public static func PlayHapticsFromJSON(str: String) {
         Debug(log: "Playing haptic from JSON")
-        StartEngine();
         if (!SupportsHaptics)
         {
             return;
         }
+
+        StartEngine();
         
         do
         {
@@ -234,7 +235,10 @@ import UnityFramework_CoreHapticsPrivate
     
     @objc public static func CancelHaptics()
     {
-        Engine.stop();
+        if(_engine != nil)
+        {
+            _engine.stop();
+        }
         _engineNeedsStart = true;
     }
     
