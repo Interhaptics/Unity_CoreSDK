@@ -55,13 +55,13 @@ namespace Interhaptics
 #endif
 
 #if UNITY_EDITOR_OSX
-            UnityEngine.Debug.LogWarning("Unity Editor in iOS will have dummy implementation of the Interhaptics Engine. To correctly debug in Unity use a Windows version of the Unity Editor.");
+            UnityEngine.Debug.LogWarning("Unity Editor in macOS will have dummy implementation of the Interhaptics Engine. To correctly debug in Unity use a Windows version of the Unity Editor.");
 #endif
 
 #if !UNITY_EDITOR_OSX
             Core.HAR.Init();
             Internal.HapticDeviceManager.DeviceInitLoop();
-#if UNITY_ANDROID && !ENABLE_METAQUEST
+#if UNITY_ANDROID && !ENABLE_METAQUEST && !ENABLE_OPENXR && !UNITY_EDITOR
             Platforms.Mobile.GenericAndroidHapticAbstraction.Initialize();
 #elif UNITY_IPHONE
             UnityCoreHaptics.UnityCoreHapticsProxy.CreateEngine();
@@ -78,7 +78,7 @@ namespace Interhaptics
 #endif
             PlayerLoopSystem updateHaptic = new PlayerLoopSystem()
             {
-                updateDelegate = UdpateHaptic,
+                updateDelegate = UpdateHaptic,
                 type = typeof(InterhapticsPlayerLoop.UpdateHaptic)
             };
 
@@ -122,7 +122,7 @@ namespace Interhaptics
             return false;
         }
 
-        private static void UdpateHaptic()
+        private static void UpdateHaptic()
         {
             if (!Application.isPlaying)
             {
@@ -134,7 +134,7 @@ namespace Interhaptics
             }
 
             //Compute all haptics event
-#if !UNITY_IOS && (!UNITY_ANDROID || ENABLE_METAQUEST || UNITY_EDITOR) //TODO: CHECK OPENXR ANDROID
+#if !UNITY_IOS && (!UNITY_ANDROID || ENABLE_METAQUEST || ENABLE_OPENXR || UNITY_EDITOR)
             Core.HAR.ComputeAllEvents(Time.realtimeSinceStartup);
 #endif
             //Insert device rendering loop here

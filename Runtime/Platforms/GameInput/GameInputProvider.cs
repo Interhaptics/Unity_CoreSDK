@@ -3,7 +3,7 @@
 * ​
 */
 
-#if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && (!ENABLE_METAQUEST) && (!UNITY_ANDROID)
+#if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && !ENABLE_METAQUEST && !ENABLE_OPENXR
 using System.Runtime.InteropServices;
 
 
@@ -111,4 +111,4 @@ namespace Interhaptics.Platforms.GameInput
     }
 
 }
-#endif //  (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && !ENABLE_METAQUEST
+#endif 

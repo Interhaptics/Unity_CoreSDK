@@ -1,4 +1,17 @@
 #2024.01.16
+# v1.6.0
+
++ Various fixes on Code based APIs
++ Various fixes on Source based APIs
++ Fixes for Mobile, XR, and Controller rendering
++ Fixes for MacOS compilation
++ Updated haptic engine
++ Added support for StreamingAssets
++ Known/observed issues: iOS haptics on some phones, clicky OpenXR on Quest 3 controller
+
+---
+
+#2024.01.16
 # v1.5.0
 + Added support to Sensa HD Haptics platform
 + Fixed error logging in MacOS Editor play mode

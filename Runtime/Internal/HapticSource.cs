@@ -9,6 +9,7 @@ using Interhaptics.Core;
 using Interhaptics.Utils;
 using System.Collections;
 using System;
+using System.IO;
 
 namespace Interhaptics.Internal
 {
@@ -18,6 +19,12 @@ namespace Interhaptics.Internal
 		[Header("Haptic Effect File")]
 		[SerializeField]
         public HapticMaterial hapticMaterial;
+		[Tooltip("Use the StreamingAssets path to load the haptic effect file.")]
+		[SerializeField]
+		public bool useStreamingAssets = false; // Boolean to activate the StreamingAssets path
+		[SerializeField]
+		[Tooltip("Path to the haptic effect file in the StreamingAssets folder.")]
+		public string hapticEffectStreamingAssetsPath;
 		[Header("Haptic Source Settings")]
 		[Range(0, 2)]
 		[SerializeField]
@@ -74,7 +81,7 @@ namespace Interhaptics.Internal
 
 		#region Lifecycle
 		/// <summary>
-		/// Add the haptic material to the when the object is created
+		/// Add the haptic effect file to the when the object is created. The haptic effect file can be in the StreamingAssets folder if the useStreamingAssets property is set to true. 
 		/// </summary>
 		protected virtual void Awake()
 		{
@@ -89,13 +96,26 @@ namespace Interhaptics.Internal
                 DebugMode("IL2CPP Haptic Source");
             }
 #endif
-			if (hapticMaterial != null)
+			if (useStreamingAssets)
+			{
+				hapticEffectStreamingAssetsPath = Path.Combine(Application.streamingAssetsPath, hapticEffectStreamingAssetsPath);
+				if (File.Exists(hapticEffectStreamingAssetsPath))
+				{
+					HapticMaterialId = Core.HAR.AddHMString(File.ReadAllText(hapticEffectStreamingAssetsPath));
+					DebugMode("Loaded haptic material from StreamingAssets: " + hapticEffectStreamingAssetsPath);
+				}
+				else
+				{
+					DebugMode("Haptic material file not found in StreamingAssets: " + hapticEffectStreamingAssetsPath);
+				}
+			}
+			else if (hapticMaterial != null)
 			{
 				HapticMaterialId = Core.HAR.AddHM(hapticMaterial);
 			}
 			else
 			{
-			DebugMode("No haptic effect provided. Please assign a HapticMaterial in the inspector or provide a path to a haptic effect file in the StreamingAssets directory.");
+				DebugMode("No haptic effect provided. Please assign a HapticMaterial in the inspector or provide a path to a haptic effect file in the StreamingAssets directory.");
 			}
 		}
 
@@ -135,7 +155,7 @@ namespace Interhaptics.Internal
 			}
 			if (playAtStart)
 			{
-				playingCoroutine = StartCoroutine(ControlVibration());
+				PlayEventVibration();
 			}
 		}
 
@@ -169,7 +189,7 @@ namespace Interhaptics.Internal
 		/// <summary>
 		/// Call this method to apply the looping state
 		/// </summary>
-		public void ApplyLooping(bool loopValue)
+		public void ApplyLooping(int loopValue)
 		{
 			DebugMode("Applied looping: " + loopValue);
 			HAR.SetEventLoop(HapticMaterialId, loopValue);
@@ -193,7 +213,7 @@ namespace Interhaptics.Internal
 		public virtual void Play()
         {
 			isPlaying = true;
-            Core.HAR.PlayEvent(HapticMaterialId, -Time.realtimeSinceStartup + vibrationOffset, textureOffset, stiffnessOffset);
+            Core.HAR.PlayEvent(HapticMaterialId, -Time.realtimeSinceStartup - vibrationOffset, textureOffset, stiffnessOffset);
         }
 
 		/// <summary>
@@ -203,6 +223,9 @@ namespace Interhaptics.Internal
         {
 			isPlaying = false;
             Core.HAR.StopEvent(HapticMaterialId);
+#if (UNITY_ANDROID && !ENABLE_METAQUEST) || UNITY_IOS && !UNITY_EDITOR
+			HAR.StopAllEvents();
+#endif
 			if (playingCoroutine != null)
 			{
 				StopCoroutine(playingCoroutine);
@@ -232,50 +255,35 @@ namespace Interhaptics.Internal
 		/// </summary>
 		public virtual void PlayEventVibration()
 		{
+#if (!ENABLE_METAQUEST && !ENABLE_OPENXR && UNITY_ANDROID && !UNITY_EDITOR) || UNITY_IOS // Coroutine logic specific to Android and iOS
+            float loopStartTime = Time.time;
+            int maxComputedLoops = maxLoops > 0 ? maxLoops : int.MaxValue; 
+			DebugMode("Playing Haptic Material id:" + HapticMaterialId);
+			HAR.PlayHapticEffectId(HapticMaterialId, 1, maxComputedLoops, vibrationOffset);
+			isPlaying = false;
+			float totalTimePlayed = maxComputedLoops * (float)hapticEffectDuration;
+			DebugMode($"Finished playing haptics at {Time.time} after {totalTimePlayed} seconds");
+#else
 			if (playingCoroutine != null)
 			{
 				StopCoroutine(playingCoroutine);
 			}
 			playingCoroutine = StartCoroutine(ControlVibration());
+#endif
 		}
 
 		/// <summary>
-		/// Controls the vibration perception based on the full length of the haptic material; stops any residual haptics which might come from the controller after the haptic playback length
+		/// Controls the vibration perception based on the full length of the haptic material; stops any residual haptics which might come from the controller after the haptic playback length (made for platforms other than mobile)
 		/// </summary>
 		/// <returns></returns>
 		public virtual IEnumerator ControlVibration()
 		{
-			yield return new WaitForSeconds(vibrationOffset);
 			DebugMode(string.Format("Started playing haptics! + {0}", Time.time));
-#if (!ENABLE_METAQUEST && UNITY_ANDROID && !UNITY_EDITOR) || UNITY_IOS // Coroutine logic specific to Android and iOS
-            int loopsPlayed = 0;
-            float loopStartTime = Time.time;
-            int maxComputedLoops = maxLoops > 0 ? maxLoops : int.MaxValue;
 
-            while (loopsPlayed < maxComputedLoops)
-            {
-                Play(); // Play haptic effect
-                loopsPlayed++;
-                DebugMode($"Loop {loopsPlayed} start at {Time.time}");
-
-                // Wait for the haptic effect duration to finish before restarting
-                yield return new WaitForSeconds((float)hapticEffectDuration);
-
-                // Check if the maxLoops condition has been met
-                if (loopsPlayed >= maxComputedLoops)
-                {
-                    DebugMode($"Max loops reached: {loopsPlayed} loops at {Time.time}");
-                    break;
-                }
-            }
-			isPlaying = false;
-			float totalTimePlayed = maxComputedLoops * (float)hapticEffectDuration;
-			DebugMode($"Finished playing haptics at {Time.time} after {totalTimePlayed} seconds");
-#else
 			// Coroutine logic for other platforms
 			if (isLooping)
 			{
-				ApplyLooping(isLooping);
+				ApplyLooping(maxLoops);
 			}
 			Play();
 			float effectStartTime = Time.time;
@@ -292,7 +300,7 @@ namespace Interhaptics.Internal
 				DebugMode($"Stopped playing haptics at {Time.time} after reaching max loop time of {maxLoopTime} seconds");
 				if (isLooping)
 				{
-					ApplyLooping(false);
+					ApplyLooping(0);
 				}
 				isPlaying = false;
 			}
@@ -301,7 +309,6 @@ namespace Interhaptics.Internal
 				// If maxLoopTime is not valid (e.g., -1 for indefinite), just wait for the duration of the effect
 				yield return new WaitForSeconds((float)hapticEffectDuration);
 			}
-#endif 
 			// Clean up
 			playingCoroutine = null;
 		}

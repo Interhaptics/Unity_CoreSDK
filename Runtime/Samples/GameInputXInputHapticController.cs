@@ -38,7 +38,9 @@ namespace Interhaptics.Platforms.GameInput.Samples
         [SerializeField]
         [Range(0, 2)]
         private int indexVibration;
-        private bool canModifyVibrationType = true;
+		[SerializeField]
+		public bool debugMode;
+		private bool canModifyVibrationType = true;
 		private AudioSource[] allAudioSources;
 		private SpatialHapticSource[] allSpatialHapticSources;
 
@@ -46,6 +48,18 @@ namespace Interhaptics.Platforms.GameInput.Samples
         {
             VibrationHapticSourceGUI();
         }
+
+		/// <summary>
+		/// Debug method to print messages in the console only when debugMode is enabled
+		/// </summary>
+		/// <param name="debugMessage"></param>
+		public void DebugMode(string debugMessage)
+		{
+			if (debugMode)
+			{
+				Debug.Log(debugMessage);
+			}
+		}
 
 		private void ResetHapticSources()
 		{

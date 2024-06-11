@@ -58,7 +58,11 @@ namespace Interhaptics.Platforms.XR
             if (caps.supportsBuffer)
             {
                 byte[] clip = { };
+#if UNITY_EDITOR||UNITY_STANDALONE_WIN
+                return UnityEngine.XR.InputDevices.GetDeviceAtXRNode(node).SendHapticImpulse(0, (float)PulseFromBuffer(amplitude), seconds);
+#else
                 return GenerateHapticClip(seconds, node, ref clip, amplitude) ? UnityEngine.XR.InputDevices.GetDeviceAtXRNode(node).SendHapticBuffer(0, clip) : false;
+#endif
             }
             else if (caps.supportsImpulse)
             {

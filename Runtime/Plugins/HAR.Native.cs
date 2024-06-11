@@ -48,7 +48,7 @@ namespace Interhaptics.Core
             // Dummy implementation for macOS Unity Editor
         }
 
-        public static void SetEventLoop(int _hMaterialId, bool _isLooping)
+        public static void SetEventLoop(int _hMaterialId, int _loops)
         {
             // Dummy implementation for macOS Unity Editor
         }
@@ -117,6 +117,11 @@ namespace Interhaptics.Core
             // Dummy implementation for macOS Unity Editor
             return -1;
         }
+
+        public static void ClearOutputBuffers(bool _resetClips)
+		{
+			// Dummy implementation for macOS Unity Editor
+		}
 
         public static int GetOutputBufferSize(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType)
         {
@@ -213,7 +218,7 @@ namespace Interhaptics.Core
 #if (UNITY_IOS || UNITY_SWITCH) && !UNITY_EDITOR
         const string DLL_NAME = "__Internal";
 #else
-        const string DLL_NAME = "HAR";
+		const string DLL_NAME = "HAR";
 #endif
 
 		/// <summary>
@@ -266,13 +271,13 @@ namespace Interhaptics.Core
 		[DllImport(DLL_NAME)]
 		public static extern void SetEventIntensity(int _hMaterialId, double _intensity);
 		/// <summary>
-		/// Sets the loop flag for a specific source.
+		/// Sets the loop flag for a specific source
 		/// </summary>
-		/// <param name="_hMaterialId">ID of the source. Same as the attached haptic effect.</param>
-		/// <param name="_isLooping">True if the source should be looping.</param>
-		[DllImport(DLL_NAME)]
-		public static extern void SetEventLoop(int _hMaterialId, bool _isLooping);
-
+		/// <param name="_hMaterialID">ID of the source. Same as the attached haptic effect.</param>
+		/// <param name="_numberOfLoops">Number of loops for the event. 0 means the source is not looping, 1 or more is the number of loops set</param>
+		/// <returns></returns>
+		[DllImport(DLL_NAME)] 
+        public static extern void SetEventLoop(int _hMaterialID, int _numberOfLoops);
 		/// <summary>
 		/// Updates the haptic intensity for a specific target of a source.
 		/// </summary>
@@ -321,6 +326,12 @@ namespace Interhaptics.Core
         public static extern double GetStiffnessAmp(int _id, double _step);
 		[DllImport(DLL_NAME)]
         public static extern double GetStiffnessFreq(int _id, double _step);
+        /// <summary>
+        /// ClearOutputBuffers
+        /// </summary>
+        /// <param name="_resetClips">Set to true to also clear the clips</param>
+        [DllImport(DLL_NAME)]
+        public static extern void ClearOutputBuffers(bool _resetClips = false);
 		[DllImport(DLL_NAME)]
         public static extern int GetOutputBufferSize(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType);
 		[DllImport(DLL_NAME)]

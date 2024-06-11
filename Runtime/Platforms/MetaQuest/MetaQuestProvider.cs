@@ -3,7 +3,7 @@
 * ​
 */
 
-#if ENABLE_METAQUEST && (UNITY_EDITOR || UNITY_ANDROID)
+#if ENABLE_METAQUEST && (UNITY_EDITOR || UNITY_ANDROID || UNITY_STANDALONE_WIN)
 using UnityEngine;
 
 using Interhaptics.HapticBodyMapping;

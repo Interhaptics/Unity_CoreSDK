@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,6 +14,63 @@ namespace Interhaptics.Platforms.Mobile.Tools
 	public static class iOSUtilities
 	{
 		const int PARAMETER_CURVE_MAX_SIZE = 16;
+		const double D_EPSILON = 0.00001;
+
+		private static bool IsEqual(double _a, double _b, double _epsilon = D_EPSILON)
+		{
+			return Mathf.Abs((float)(_a - _b)) <= _epsilon;
+		}
+
+		// check if the ramp between two values is going up, down or is constant
+		private static int GetCurrentRamp(double _a, double _b)
+		{
+			if (IsEqual(_a, _b)) // constant
+			{
+				return 0;
+			}
+
+			if (_a > _b) // going down
+			{
+				return -1;
+			}
+			
+			return 1; // going up
+		}
+
+		// converts HAR output buffers to simplified data for AHAP construction
+		// HAR == [value, value, value....] each value separated by _step seconds
+		// out == [time, value, time, value....] with linear interpolation between each pair
+        private static List<double> ProcessBuffer(double [] _buffer, double _step)
+        {
+            List<double> outBuffer = new List<double>();
+
+			double currentTimeStamp = 0.0;
+            int lastRamp = -2; //set to -2 to always get the first value
+
+            for (int i = 0; i < _buffer.Count(); i++)
+            {
+                if (i == _buffer.Count() - 1) //if last value, stores a pair
+                {
+                    outBuffer.Add(currentTimeStamp);
+                    outBuffer.Add(_buffer[i]);
+					break;
+                }
+
+				int currentRamp = GetCurrentRamp(_buffer[i], _buffer[i+1]); //check if curve is going up or down
+				
+				// if ramp changes, stores a pair
+				if (currentRamp != lastRamp) //will trigger at first iteration
+				{
+					lastRamp = currentRamp;
+                    outBuffer.Add(currentTimeStamp);
+                    outBuffer.Add(_buffer[i]);
+				}
+				
+				currentTimeStamp += _step;
+            }
+
+            return outBuffer;
+        }
 
 		public static string BufferToAHAP(float[] _buffer, float[] _frequencies, float[] _transientTimer, float[] _transientGain, float _duration, float _timestep)
 		{
@@ -52,26 +110,6 @@ namespace Interhaptics.Platforms.Mobile.Tools
 			AHAP ahap = new AHAP();
 			ahap.Pattern = new List<PatternObject>();
 
-			EventParameter intensity = new EventParameter
-			{
-				parameterID = ParameterID.HapticIntensity,
-				parameterValue = 1
-			};
-			EventParameter sharpness = new EventParameter
-			{
-				parameterID = ParameterID.HapticSharpness,
-				parameterValue = 0
-			};
-			Event e = new Event
-			{
-				Time = 0,
-				eventType = EventType.HapticContinuous,
-				eventDuration = (float)_duration,
-				eventParameters = new EventParameter[2] { intensity, sharpness }
-			};
-
-			ahap.Pattern.Add(e);
-
 			// transients ------------------------------------------------------------
 			if (_transients != null)
 			{
@@ -85,7 +123,7 @@ namespace Interhaptics.Platforms.Mobile.Tools
 					EventParameter sharpnessTrans = new EventParameter
 					{
 						parameterID = ParameterID.HapticSharpness,
-						parameterValue = 0.5f
+						parameterValue = 1.0f
 					};
 
 					Event CurrentTransient = new Event
@@ -97,6 +135,7 @@ namespace Interhaptics.Platforms.Mobile.Tools
 					ahap.Pattern.Add(CurrentTransient);
 
 					//puting the amplitude modulation at 1 for the transients ---
+					
 					float currentTransStart = CurrentTransient.Time;
 					float currentTransEnd = currentTransStart + 0.022f;
 
@@ -106,28 +145,70 @@ namespace Interhaptics.Platforms.Mobile.Tools
 					int end = Math.Min(endIndex, _buffer.Length);
 					for (int index = startIndex; index < end; index++)
 					{
-						_buffer[index] = 1;
+						_buffer[index] = (float)_transients[i + 1];
 					}
+					
 				}
 			}
 			// -----------------------------------------------------------------------
 
-			//Amplitude pattern ------------------------------------------------------
-			for (int j = 0; j < _buffer.Length; j += PARAMETER_CURVE_MAX_SIZE)
+			// Convert Amplitude and Frequency pattern to have less values
+			List<double> ampPattern = ProcessBuffer(_buffer, _timestep);
+			List<double> freqPattern = ProcessBuffer(_frequencies, _timestep);
+
+			EventParameter intensity = new EventParameter
 			{
-				List<ParameterCurveControlPoint> controlPoints = _buffer.Skip(j)
-					   .Take(Math.Min(_buffer.Length - j, PARAMETER_CURVE_MAX_SIZE))
-					   .Select((Value, Index) => new ParameterCurveControlPoint
+				parameterID = ParameterID.HapticIntensity,
+				parameterValue = 1
+			};
+			EventParameter sharpness = new EventParameter
+			{
+				parameterID = ParameterID.HapticSharpness,
+				parameterValue = 1
+			};
+
+			/*
+			// remove amp modulation when there are only transients
+			if (ampPattern.Count() == 2 && IsEqual(ampPattern[0], ampPattern[1]))
+			{
+				intensity.parameterValue = ampPattern[0];
+				ampPattern.Clear();
+			}
+
+			//remove freq modulation when there are only transients
+			if (freqPattern.Count() == 2 && IsEqual(freqPattern[0], freqPattern[1]))
+			{
+				sharpness.parameterValue = freqPattern[0];
+				freqPattern.Clear();
+			}*/
+
+			Event e = new Event
+			{
+				Time = 0,
+				eventType = EventType.HapticContinuous,
+				eventDuration = (float)_duration,
+				eventParameters = new EventParameter[2] { intensity, sharpness }
+			};
+
+			ahap.Pattern.Add(e);
+
+			//Amplitude pattern ------------------------------------------------------
+			for (int j = 0; j < ampPattern.Count(); j += PARAMETER_CURVE_MAX_SIZE * 2)
+			{
+				List<ParameterCurveControlPoint> controlPoints = new List<ParameterCurveControlPoint>();
+				for (int k = 0; k < Math.Min(ampPattern.Count() - j, PARAMETER_CURVE_MAX_SIZE * 2); k+=2)
+				{
+					controlPoints.Add(new ParameterCurveControlPoint
 					   {
-						   Time = Index * _timestep,
-						   ParameterValue = Mathf.Max(0, (float)Value)
-						   //ParameterValue = 1
-					   }).ToList();
+						   Time = ampPattern[k + j] - ampPattern[j],
+						   ParameterValue = Mathf.Max(0, (float)ampPattern[k + j + 1])
+					   });
+				}
 
 				ParameterCurve parameterCurve = new ParameterCurve
 				{
 					parameterID = ParameterID.HapticIntensityControl,
-					Time = j * _timestep,
+					Time = ampPattern[j],
 					parameterCurveControlPoints = controlPoints
 				};
 				ahap.Pattern.Add(parameterCurve);
@@ -135,21 +216,22 @@ namespace Interhaptics.Platforms.Mobile.Tools
 			// -----------------------------------------------------------------------
 
 			// Frequency pattern ------------------------------------------------------
-
-			for (int j = 0; j < _frequencies.Length; j += PARAMETER_CURVE_MAX_SIZE)
+			for (int j = 0; j < freqPattern.Count(); j += PARAMETER_CURVE_MAX_SIZE * 2)
 			{
-				List<ParameterCurveControlPoint> controlPoints = _frequencies.Skip(j)
-					   .Take(Math.Min(_frequencies.Length - j, PARAMETER_CURVE_MAX_SIZE))
-					   .Select((Value, Index) => new ParameterCurveControlPoint
+				List<ParameterCurveControlPoint> controlPoints = new List<ParameterCurveControlPoint>();
+                for (int k = 0; k < Math.Min(freqPattern.Count() - j, PARAMETER_CURVE_MAX_SIZE * 2); k+=2)
+				{
+					controlPoints.Add(new ParameterCurveControlPoint
 					   {
-						   Time = Index * _timestep,
-						   ParameterValue = Mathf.Max(0, (Mathf.Clamp((float)Value, 65, 300) - 300.0f) / 235.0f + 1)
-					   }).ToList();
+						   Time = freqPattern[k + j] - freqPattern[j],
+						   ParameterValue = Mathf.Max(0, (Mathf.Clamp((float)freqPattern[k + j + 1], 65.0f, 300.0f) - 300.0f) / 235.0f + 1) - 1
+					   });
+				}
 
 				ParameterCurve parameterCurve = new ParameterCurve
 				{
 					parameterID = ParameterID.HapticSharpnessControl,
-					Time = j * _timestep,
+					Time = freqPattern[j],
 					parameterCurveControlPoints = controlPoints
 				};
 				ahap.Pattern.Add(parameterCurve);

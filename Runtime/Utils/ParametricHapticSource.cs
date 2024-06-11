@@ -1,5 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿/* ​
+* Copyright (c) 2023 Go Touch VR SAS. All rights reserved. ​
+* ​
+*/
+
 using UnityEngine;
 using System.Linq;
 using Interhaptics.HapticBodyMapping;
@@ -30,6 +33,7 @@ namespace Interhaptics.Utils
 	[AddComponentMenu("Interhaptics/ParametricHapticSource")]
 	public class ParametricHapticSource : Internal.HapticSource
 	{
+#region Public Fields
 		[Header("Amplitude Configuration")]
 		[Tooltip("Enable to add time-amplitude composition.")]
 		public bool useAmplitude;
@@ -59,9 +63,9 @@ namespace Interhaptics.Utils
 //Resulting Pitch Array
 		[HideInInspector]
 		private double[] pitch;
-		[Tooltip("Minimum value for the frequency range. Default 60")]
+		[Tooltip("Minimum value for the frequency range. Default 65")]
 		[SerializeField]
-		private double freqMin = 60.0;
+		private double freqMin = 65.0;
 		[Tooltip("Maximum value for the frequency range. Default 300")]
 		[SerializeField]
 		private double freqMax = 300.0;
@@ -70,7 +74,9 @@ namespace Interhaptics.Utils
 		[SerializeField]
 		private double[] transients;
 		public HapticBodyPart[] hapticBodyParts;
+#endregion
 
+#region Lifecycle
 		protected override void Awake()
 		{
 			// Custom initialization for ParametricHapticSource. Bypasses adding a haptic effect
@@ -93,15 +99,12 @@ namespace Interhaptics.Utils
 			base.Start();
 		}
 
-		protected override void Update()
+		private void OnDestroy()
 		{
-			base.Update();
-			//* Debugging controls
-			if (Input.GetKeyDown(KeyCode.Z))
-			{
-				PlayEventVibration();
-			}
+			// Optional: Cleanup the haptic effect
+			//HAR.ClearEvent(HapticMaterialId);
 		}
+		#endregion
 
 		public bool InitializeParametricHapticSource()
 		{
@@ -138,7 +141,6 @@ namespace Interhaptics.Utils
 		public override void Play()
 		{
 			AddTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
-			isPlaying = true;
 			base.Play();
 		}
 		public override void Stop()
@@ -146,10 +148,11 @@ namespace Interhaptics.Utils
 			base.Stop();
 		}
 
-		private void OnDestroy()
+		public override void PlayEventVibration()
 		{
-			// Optional: Cleanup the haptic effect
-			//HAR.ClearEvent(HapticMaterialId);
+			AddTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
+			base.PlayEventVibration();
 		}
+
 	}
 }

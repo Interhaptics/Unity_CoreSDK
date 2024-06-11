@@ -23,14 +23,8 @@ namespace Interhaptics.Utils
 #region Lifecycle
 		protected override void Start()
 		{
-			//AddTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
+			AddTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
 			base.Start();
-		}
-
-		protected override void Update()
-		{
-			base.Update();
-			//DebugMode("Target intensity changed to: " + targetIntensity);
 		}
 #endregion
 
@@ -63,43 +57,8 @@ namespace Interhaptics.Utils
 		// Use the base class's coroutine for looping. This is necessary to avoid multiple coroutines running at the same time.
 		public override void PlayEventVibration()
 		{
+			AddTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
 			base.PlayEventVibration();
-		}
-
-		/// <summary>
-		/// Controls the vibration perception based on the full length of the haptic material; stops any residual haptics which might come from the controller after the haptic playback length
-		/// </summary>
-		/// <returns></returns>
-		public override IEnumerator ControlVibration()
-		{
-			yield return new WaitForSeconds(vibrationOffset);
-			DebugMode(string.Format("Started playing haptics! + {0}", Time.time));
-			int loopsPlayed = 0;
-			float loopStartTime = Time.time;
-			float totalTimePlayed = 0f;
-			int maxComputedLoops = maxLoops > 0 ? maxLoops : int.MaxValue;
-			Debug.Log ("maxComputedLoops: " + maxComputedLoops + " " + hapticMaterial.name);
-
-			while (loopsPlayed < maxComputedLoops)
-			{
-				Play(); // Play haptic effect
-				loopsPlayed++;
-				DebugMode($"Loop {loopsPlayed} start at {Time.time}");
-
-				// Wait for the haptic effect duration to finish before restarting
-				yield return new WaitForSeconds((float)hapticEffectDuration);
-				totalTimePlayed = maxComputedLoops * (float)hapticEffectDuration;
-
-				// Check if the maxLoops condition has been met
-				if (loopsPlayed >= maxComputedLoops)
-				{
-					DebugMode($"Max loops reached: {loopsPlayed} loops at {Time.time}");
-					break;
-				}
-			}
-			isPlaying = false;
-			DebugMode($"Finished playing haptics at {Time.time} after {totalTimePlayed} seconds");
-			playingCoroutine = null;
 		}
 	}
 }

@@ -4,11 +4,11 @@
 */
 
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Interhaptics.HapticBodyMapping;
 using Interhaptics.Core;
-using System.Collections;
 
 namespace Interhaptics.Utils
 {
@@ -22,7 +22,6 @@ namespace Interhaptics.Utils
         [SerializeField]
         private HapticBodyPart[] hapticBodyParts;
 		private bool switchedPlayAtStart = false;
-		private double currentTargetIntensity;
 
 		public bool PlayOnAwake { get { return playAtStart; } set { playAtStart = value; } }
 
@@ -56,11 +55,6 @@ namespace Interhaptics.Utils
 			}
 		}   
 
-        protected override void Update()
-        {
-			base.Update();
-		}
-
         public override void Play()
         {
 			AddTarget(hapticBodyParts.Select(hapticBodyPart => new CommandData(Operator.Plus, hapticBodyPart.BodyPart, hapticBodyPart.Side)).ToList());
@@ -78,12 +72,18 @@ namespace Interhaptics.Utils
 		// Use the base class's coroutine for looping
 		public override void PlayEventVibration()
 		{
+			if (playingCoroutine != null)
+			{
+				StopCoroutine(playingCoroutine);
+			}
 			playingCoroutine = StartCoroutine(ControlVibration());
 		}
 
 		public override IEnumerator ControlVibration()
 		{
+#if (!ENABLE_METAQUEST && !ENABLE_OPENXR && UNITY_ANDROID && !UNITY_EDITOR) || UNITY_IOS
 			yield return new WaitForSeconds(vibrationOffset);
+#endif
 			DebugMode(string.Format("Started playing haptics! + {0}", Time.time));
 			int loopsPlayed = 0;
 			float loopStartTime = Time.time;

@@ -56,10 +56,29 @@ namespace Interhaptics.Platforms.IOS
         [UnityEngine.Scripting.Preserve]
         public bool Init()
         {
+            if ((UnityEngine.iOS.Device.generation < UnityEngine.iOS.DeviceGeneration.iPhone8) ||
+				(UnityEngine.iOS.Device.systemVersion.CompareTo("13") <= 0) || (UnityEngine.iOS.Device.generation.ToString().Contains("iPad")))
+			{
+                if (!(UnityEngine.iOS.Device.generation == UnityEngine.iOS.DeviceGeneration.iPhoneSE2Gen))
+                {
+                    if (HapticManager.DebugSwitch)
+				    {
+					    UnityEngine.Debug.LogError("Haptics not supported on this iOS device. " + UnityEngine.iOS.Device.generation +" " + UnityEngine.iOS.Device.systemVersion);
+				    }
+                    //return false;
+                }
+                else
+				{
+					if (HapticManager.DebugSwitch)
+                    {
+                    UnityEngine.Debug.LogError("Haptics supported supported on this iOS device. " + UnityEngine.iOS.Device.generation +" " + UnityEngine.iOS.Device.systemVersion);
+                    }
+                }
+			}
             Core.HAR.AddBodyPart(Perception.Vibration, hand, 1, 1, 1, SAMPLERATE, true, true, true, false);
             if (HapticManager.DebugSwitch)
 			{
-                        UnityEngine.Debug.Log("iOS haptic provider started.");
+                        UnityEngine.Debug.Log("iOS haptic provider started. " + UnityEngine.iOS.Device.generation +" " + UnityEngine.iOS.Device.systemVersion);
 			}
             return true;
         }
@@ -93,17 +112,15 @@ namespace Interhaptics.Platforms.IOS
             double[] outputBufferVibrationTransient = null;
 
             int sizeAmpVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Amplitude);
-            /* removed in iphone_fix branch - TODO: check if this is needed
-            if (sizeAmpVibration <= 0)
+            int sizeTransientVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Transient);
+
+            if (sizeAmpVibration <= 0 && sizeTransientVibration <= 0) //if no amplitude nor transient
             {
                 return;
             }
 
-
             //if amplitude buffer not null
-            */
             int sizeFreqVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Frequency);
-            int sizeTransientVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Transient);
 
             //getting amplitude haptic data
             outputBufferVibrationAmplitude = new double[sizeAmpVibration];

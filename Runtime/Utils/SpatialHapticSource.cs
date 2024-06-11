@@ -14,7 +14,9 @@ namespace Interhaptics
     [RequireComponent(typeof(Rigidbody))]
     public class SpatialHapticSource : Internal.HapticSource
     {
-        public enum PlayMethod
+
+#region Enums
+		public enum PlayMethod
         {
             Undefined,
             OnCollision,
@@ -22,24 +24,32 @@ namespace Interhaptics
         }
 
         public PlayMethod playMethod;
-        
-        protected override  void Start()
-        {
-            isLooping = false;
-            playAtStart = false;
-            base.Start();
-        }
+#endregion
 
-        /// <summary>
-        /// Controls the vibration perception based on the full length of the haptic material; stops any residual haptics which might come from the controller after the haptic playback length
-        /// </summary>
-        /// <returns></returns>
-        public override IEnumerator ControlVibration()
+#region Lifecycle
+		protected override void Start()
         {
-            DebugMode(string.Format("Started playing  haptics! + {0}",Time.time));
+			isLooping = false;
+			playAtStart = false;
+			base.Start();
+		}
+		#endregion
+
+		public override void PlayEventVibration()
+		{
+			base.PlayEventVibration();
+		}
+
+		/// <summary>
+		/// Controls the vibration perception based on the full length of the haptic material; stops any residual haptics which might come from the controller after the haptic playback length
+		/// </summary>
+		/// <returns></returns>
+		public override IEnumerator ControlVibration()
+        {
+            DebugMode(string.Format("Started playing  haptics on Spatial HS! + {0}",Time.time));
             Play();
             yield return new WaitForSeconds((float)hapticEffectDuration);
-            DebugMode(string.Format("Finished playing haptics at timestamp : + {0} at {1}", hapticEffectDuration, Time.time));
+            DebugMode(string.Format("Finished playing haptics at timestamp on SpatialHS : + {0} at {1}", hapticEffectDuration, Time.time));
         }
 
 #if UNITY_EDITOR
@@ -62,7 +72,7 @@ namespace Interhaptics
             }
             gameObject.GetComponent<Rigidbody>().useGravity = false;
         }
-        #endif
+#endif
 
         public void AddTarget(GameObject target)
         {
@@ -103,7 +113,7 @@ namespace Interhaptics
             AddTarget(other);
             if (hapticEffectDuration > 0)
             {
-                StartCoroutine(ControlVibration());
+                PlayEventVibration();
             }
             else
             {
