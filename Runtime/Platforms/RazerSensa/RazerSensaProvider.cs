@@ -48,7 +48,7 @@ namespace Interhaptics.Platforms.Sensa
         #region PROVIDER LOOP
         private static class RazerSensaProviderNative
         {
-            const string DLL_NAME = "Interhaptics.RazerSensa";
+            const string DLL_NAME = "Interhaptics.RazerProvider";
 
             [DllImport(DLL_NAME)]
             public static extern bool ProviderInit();

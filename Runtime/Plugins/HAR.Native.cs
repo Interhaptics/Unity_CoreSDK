@@ -4,6 +4,7 @@
 */
 
 using System.Runtime.InteropServices;
+using Interhaptics.HapticBodyMapping;
 
 
 namespace Interhaptics.Core
@@ -123,29 +124,36 @@ namespace Interhaptics.Core
 			// Dummy implementation for macOS Unity Editor
 		}
 
-        public static int GetOutputBufferSize(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType)
+        public static int GetOutputBufferSize(int _avatarID, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType)
         {
             // Dummy implementation for macOS Unity Editor
             return -1;
         }
 
-        public static void GetOutputBuffer(double[] _outputBuffer, int _bufferSize, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType)
+        public static void GetOutputBuffer(double[] _outputBuffer, int _bufferSize, int _avatarID, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType)
         {
             // Dummy implementation for macOS Unity Editor
         }
 
-        public static ulong GetVectorStartingTime(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension)
+        public static ulong GetVectorStartingTime(int _avatarID, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension)
         {
             // Dummy implementation for macOS Unity Editor
             return 0;
         }
 
-        public static void AddBodyPart(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension, double _sampleRate, bool _hd, bool _splitFrequency, bool _splitTransient, bool realTime)
+        public static int CreateBodyPart(Perception _perception, BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension, double _sampleRate, bool _hd, bool _splitFrequency, bool _splitTransient, EProtocol _protocol)
         {
             // Dummy implementation for macOS Unity Editor
+            return -1;
         }
 
-        public static void DeleteBodyPart(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID)
+        public static int CreateBodyParts(int _numberOfBP, Perception[] _perception, BodyPartID[] _bodyPartID, int[] _xDimension, int[] _yDimension, int[] _zDimension, double[] _sampleRate, bool[] _hd, bool[] _splitFrequency, bool[] _splitTransient, EProtocol[] _protocol)
+        {
+            // Dummy implementation for macOS Unity Editor
+            return -1;
+        }
+
+        public static void DeleteBodyPart(int _avatarID, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID)
         {
             // Dummy implementation for macOS Unity Editor
         }
@@ -218,7 +226,7 @@ namespace Interhaptics.Core
 #if (UNITY_IOS || UNITY_SWITCH) && !UNITY_EDITOR
         const string DLL_NAME = "__Internal";
 #else
-		const string DLL_NAME = "HAR";
+        const string DLL_NAME = "HAR";
 #endif
 
 		/// <summary>
@@ -333,15 +341,17 @@ namespace Interhaptics.Core
         [DllImport(DLL_NAME)]
         public static extern void ClearOutputBuffers(bool _resetClips = false);
 		[DllImport(DLL_NAME)]
-        public static extern int GetOutputBufferSize(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType);
+        public static extern int GetOutputBufferSize(int _avatarID, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType);
 		[DllImport(DLL_NAME)]
-        public static extern void GetOutputBuffer(double[] _outputBuffer, int _bufferSize, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType);
+        public static extern void GetOutputBuffer(double[] _outputBuffer, int _bufferSize, int _avatarID, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _x, int _y, int _z, Interhaptics.HapticBodyMapping.BufferDataType _dataType);
 		[DllImport(DLL_NAME)]
-        public static extern ulong GetVectorStartingTime(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension);
+        public static extern ulong GetVectorStartingTime(int _avatarID, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension);
 		[DllImport(DLL_NAME)]
-        public static extern void AddBodyPart(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension, double _sampleRate, bool _hd, bool _splitFrequency, bool _splitTransient, bool realTime);
-		[DllImport(DLL_NAME)]
-        public static extern void DeleteBodyPart(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID);
+        public static extern int CreateBodyPart(Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension, double _sampleRate, bool _hd, bool _splitFrequency, bool _splitTransient, Interhaptics.HapticBodyMapping.EProtocol _protocol);
+        [DllImport(DLL_NAME)]
+        public static extern int CreateBodyParts(int _numberOfBP, Interhaptics.HapticBodyMapping.Perception[] _perception, Interhaptics.HapticBodyMapping.BodyPartID[] _bodyPartID, int[] _xDimension, int[] _yDimension, int[] _zDimension, double[] _sampleRate, bool[] _hd, bool[] _splitFrequency, bool[] _splitTransient, Interhaptics.HapticBodyMapping.EProtocol[] _protocol);
+        [DllImport(DLL_NAME)]
+        public static extern void DeleteBodyPart(int _avatarID, Interhaptics.HapticBodyMapping.Perception _perception, Interhaptics.HapticBodyMapping.BodyPartID _bodyPartID);
 
 		/// <summary>
 		/// Starts the rendering playback of a haptic source.

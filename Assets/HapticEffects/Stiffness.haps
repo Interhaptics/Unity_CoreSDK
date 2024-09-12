@@ -1,1 +1,60 @@
-{"m_version":"5","m_description":"","m_HDFlag":0,"m_time_unit":0,"m_length_unit":7,"m_stiffness":{"m_loop":0,"m_maximum":1.000000,"m_gain":1.000000,"m_signalEvaluationMethod":3,"m_melodies":[{"m_mute":0,"m_gain":1.000000,"m_notes":[{"m_startingPoint":0.000000,"m_length":1.000000,"m_priority":1,"m_gain":1.000000,"m_hapticEffect":{"m_amplitudeModulation":{"m_extrapolationStrategy":1,"m_keyframes":[{"m_time":0.000000,"m_value":0.000000},{"m_time":0.220281,"m_value":0.990718},{"m_time":1.000000,"m_value":1.000000}]},"m_frequencyModulation":{"m_extrapolationStrategy":0,"m_keyframes":[{"m_time":0.000000,"m_value":150.000000},{"m_time":1.000000,"m_value":150.000000}]}}}]}]},"m_texture":{"m_loop":0,"m_maximum":1.000000,"m_gain":1.000000,"m_signalEvaluationMethod":3,"m_melodies":[]},"m_vibration":{"m_loop":0,"m_maximum":1.000000,"m_gain":1.000000,"m_signalEvaluationMethod":3,"m_melodies":[]},"m_gain":1.000000}
+{
+    "m_HDFlag": 0,
+    "m_description": "",
+    "m_gain": 1.0,
+    "m_length_unit": 7,
+    "m_stiffness": {
+        "m_gain": 1.0,
+        "m_loop": 0,
+        "m_melodies": [
+            {
+                "m_gain": 1.0,
+                "m_mute": 0,
+                "m_notes": [
+                    {
+                        "m_hapticEffect": {
+                            "m_amplitudeModulation": {
+                                "m_extrapolationStrategy": 1,
+                                "m_keyframes": [
+                                    {
+                                        "m_time": 0.0,
+                                        "m_value": 0.0
+                                    },
+                                    {
+                                        "m_time": 0.220281,
+                                        "m_value": 0.990718
+                                    },
+                                    {
+                                        "m_time": 1.0,
+                                        "m_value": 1.0
+                                    }
+                                ]
+                            },
+                            "m_gain": 1,
+                            "m_length": 1,
+                            "m_priority": 1,
+                            "m_startingPoint": 0
+                        }
+                    }
+                ]
+            }
+        ],
+        "m_signalEvaluationMethod": 3
+    },
+    "m_texture": {
+        "m_gain": 1.0,
+        "m_loop": 0,
+        "m_maximum": 1.0,
+        "m_melodies": [],
+        "m_signalEvaluationMethod": 3
+    },
+    "m_time_unit": 0,
+    "m_version": "5",
+    "m_vibration": {
+        "m_gain": 1.0,
+        "m_loop": 0,
+        "m_maximum": 1.0,
+        "m_melodies": [],
+        "m_signalEvaluationMethod": 3
+    }
+}

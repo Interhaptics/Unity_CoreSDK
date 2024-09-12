@@ -23,6 +23,7 @@ namespace Interhaptics.Platforms.IOS
         private const int SAMPLERATE = 100;
         private ulong lastBufferStartingTime = 0;
         private BodyPartID hand = BodyPartID.Bp_Left_palm;
+        private int deviceID = -1;
 #endregion
 
 #region HAPTIC CHARACTERISTICS GETTERS
@@ -75,7 +76,7 @@ namespace Interhaptics.Platforms.IOS
                     }
                 }
 			}
-            Core.HAR.AddBodyPart(Perception.Vibration, hand, 1, 1, 1, SAMPLERATE, true, true, true, false);
+            deviceID = Core.HAR.CreateBodyPart(Perception.Vibration, hand, 1, 1, 1, SAMPLERATE, true, true, true, EProtocol.Clips);
             if (HapticManager.DebugSwitch)
 			{
                         UnityEngine.Debug.Log("iOS haptic provider started. " + UnityEngine.iOS.Device.generation +" " + UnityEngine.iOS.Device.systemVersion);
@@ -98,7 +99,7 @@ namespace Interhaptics.Platforms.IOS
         [UnityEngine.Scripting.Preserve]
         public void RenderHaptics()
         {
-            ulong startingTime = Core.HAR.GetVectorStartingTime(Perception.Vibration, hand, 0, 0, 0);
+            ulong startingTime = Core.HAR.GetVectorStartingTime(deviceID, Perception.Vibration, hand, 0, 0, 0);
             //if something to update
             if (startingTime == lastBufferStartingTime)
             {
@@ -111,8 +112,8 @@ namespace Interhaptics.Platforms.IOS
             double[] outputBufferVibrationFrequency = null;
             double[] outputBufferVibrationTransient = null;
 
-            int sizeAmpVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Amplitude);
-            int sizeTransientVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Transient);
+            int sizeAmpVibration = Core.HAR.GetOutputBufferSize(deviceID, Perception.Vibration, hand, 0, 0, 0, BufferDataType.Amplitude);
+            int sizeTransientVibration = Core.HAR.GetOutputBufferSize(deviceID, Perception.Vibration, hand, 0, 0, 0, BufferDataType.Transient);
 
             if (sizeAmpVibration <= 0 && sizeTransientVibration <= 0) //if no amplitude nor transient
             {
@@ -120,19 +121,19 @@ namespace Interhaptics.Platforms.IOS
             }
 
             //if amplitude buffer not null
-            int sizeFreqVibration = Core.HAR.GetOutputBufferSize(Perception.Vibration, hand, 0, 0, 0, BufferDataType.Frequency);
+            int sizeFreqVibration = Core.HAR.GetOutputBufferSize(deviceID, Perception.Vibration, hand, 0, 0, 0, BufferDataType.Frequency);
 
             //getting amplitude haptic data
             outputBufferVibrationAmplitude = new double[sizeAmpVibration];
-            Core.HAR.GetOutputBuffer(outputBufferVibrationAmplitude, sizeAmpVibration, Perception.Vibration, hand, 0, 0, 0, BufferDataType.Amplitude);
+            Core.HAR.GetOutputBuffer(outputBufferVibrationAmplitude, sizeAmpVibration, deviceID, Perception.Vibration, hand, 0, 0, 0, BufferDataType.Amplitude);
 
             //getting frequency haptic data
             outputBufferVibrationFrequency = new double[sizeFreqVibration];
-            Core.HAR.GetOutputBuffer(outputBufferVibrationFrequency, sizeFreqVibration, Perception.Vibration, hand, 0, 0, 0, BufferDataType.Frequency);
+            Core.HAR.GetOutputBuffer(outputBufferVibrationFrequency, sizeFreqVibration, deviceID, Perception.Vibration, hand, 0, 0, 0, BufferDataType.Frequency);
 
             //geting transients haptic data
             outputBufferVibrationTransient = new double[sizeTransientVibration];
-            Core.HAR.GetOutputBuffer(outputBufferVibrationTransient, sizeTransientVibration, Perception.Vibration, hand, 0, 0, 0, BufferDataType.Transient);
+            Core.HAR.GetOutputBuffer(outputBufferVibrationTransient, sizeTransientVibration, deviceID, Perception.Vibration, hand, 0, 0, 0, BufferDataType.Transient);
 
             double EffectLength = sizeAmpVibration / (float)SAMPLERATE;
 

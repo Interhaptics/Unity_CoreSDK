@@ -1,3 +1,13 @@
+#2024.09.12
+# v1.7.0
+
++ Merged community pull request 01 (fix on iOS engine init)
++ Updated .haps library to V6 format
++ Fixed an issue that could lead to crash if 2 controllers of different manufacturers were plugged 
++ Updated haptic engine and device libraries  
+
+---
+
 #2024.01.16
 # v1.6.0
 

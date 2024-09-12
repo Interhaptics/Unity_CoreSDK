@@ -24,6 +24,8 @@ namespace Interhaptics.Platforms.Android
         private bool hapticPlaying= false;
         private float? expectedEndTimestamp = null;
         private BodyPartID Hand= BodyPartID.Bp_Left_palm;
+        private const EProtocol PROTOCOL = EProtocol.Clips;
+        private int myAvatarID = -1;
 #endregion
 
 #region HAPTIC CHARACTERISTICS GETTERS
@@ -97,7 +99,7 @@ namespace Interhaptics.Platforms.Android
 #endif
 
             Interhaptics.Platforms.Mobile.GenericAndroidHapticAbstraction.Initialize();
-            Core.HAR.AddBodyPart(Perception.Vibration, Hand, 1, 1, 1, SAMPLERATE, false, false, false, false);
+            myAvatarID = Core.HAR.CreateBodyPart(Perception.Vibration, Hand, 1, 1, 1, SAMPLERATE, false, false, false, PROTOCOL);
             if (HapticManager.DebugSwitch)
 			{
             using (var version = new AndroidJavaClass("android.os.Build$VERSION"))
@@ -134,17 +136,17 @@ namespace Interhaptics.Platforms.Android
         [UnityEngine.Scripting.Preserve]
         public void RenderHaptics()
         {
-            ulong startingTime = Core.HAR.GetVectorStartingTime(Perception.Vibration, Hand, 0, 0, 0);
+            ulong startingTime = Core.HAR.GetVectorStartingTime(myAvatarID, Perception.Vibration, Hand, 0, 0, 0);
             //if something to update
             if (startingTime!= lastBufferStartingTime)
             {
                 lastBufferStartingTime = startingTime;
-                int size = Core.HAR.GetOutputBufferSize(Perception.Vibration, Hand, 0, 0, 0, BufferDataType.Amplitude);
+                int size = Core.HAR.GetOutputBufferSize(myAvatarID, Perception.Vibration, Hand, 0, 0, 0, BufferDataType.Amplitude);
                 if (size > 0)
                 {  
                     double[] outputBuffer = new double[size];
                     //getting haptic amplitude buffer to play
-                    Core.HAR.GetOutputBuffer(outputBuffer, size, Perception.Vibration, Hand, 0, 0, 0, BufferDataType.Amplitude);
+                    Core.HAR.GetOutputBuffer(outputBuffer, size, myAvatarID, Perception.Vibration, Hand, 0, 0, 0, BufferDataType.Amplitude);
                     List<int> AndroidOutputBuffer = new List<int>();
                     List<long> timeBuffer = new List<long>();
                     long step = Mathf.RoundToInt(1000.0f / SAMPLERATE);

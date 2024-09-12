@@ -1,1 +1,507 @@
-{"m_version":"5","m_description":"","m_HDFlag":0,"m_time_unit":0,"m_length_unit":7,"m_stiffness":{"m_loop":0,"m_maximum":1.000000,"m_gain":1.000000,"m_signalEvaluationMethod":3,"m_melodies":[]},"m_texture":{"m_loop":0,"m_maximum":1.000000,"m_gain":1.000000,"m_signalEvaluationMethod":3,"m_melodies":[]},"m_vibration":{"m_loop":0,"m_maximum":1.000000,"m_gain":1.000000,"m_signalEvaluationMethod":3,"m_melodies":[{"m_mute":0,"m_gain":1.000000,"m_notes":[]},{"m_mute":0,"m_gain":1.000000,"m_notes":[{"m_startingPoint":0.000000,"m_length":7.143937,"m_priority":1,"m_gain":1.000000,"m_hapticEffect":{"m_underlyingSignal":{"m_phase":0.000000,"m_amplitude":1.000000,"m_frequency":75.000000,"m_verticalOffset":0.000000,"m_signalType":1},"m_amplitudeModulation":{"m_extrapolationStrategy":0,"m_keyframes":[{"m_time":0.000000,"m_value":0.002244},{"m_time":0.025000,"m_value":0.002244,"m_inSlope":0.593360,"m_outSlope":0.593360},{"m_time":0.178918,"m_value":0.314815},{"m_time":0.370616,"m_value":0.833333},{"m_time":0.677332,"m_value":0.558201},{"m_time":0.869030,"m_value":0.375661},{"m_time":0.958489,"m_value":0.616402},{"m_time":1.067118,"m_value":0.338624},{"m_time":1.226866,"m_value":0.502646},{"m_time":1.341885,"m_value":0.291005},{"m_time":1.399394,"m_value":0.428571},{"m_time":1.533582,"m_value":0.261905},{"m_time":1.648601,"m_value":0.359788},{"m_time":1.654991,"m_value":0.203704},{"m_time":1.859469,"m_value":0.365079},{"m_time":1.885028,"m_value":0.222222},{"m_time":2.038386,"m_value":0.304233},{"m_time":2.063946,"m_value":0.153439},{"m_time":2.134235,"m_value":0.206349},{"m_time":2.198135,"m_value":0.140212},{"m_time":2.319543,"m_value":0.206349},{"m_time":2.370663,"m_value":0.111111},{"m_time":2.498461,"m_value":0.169312},{"m_time":2.543191,"m_value":0.121693},{"m_time":2.670989,"m_value":0.145503},{"m_time":2.728498,"m_value":0.103175},{"m_time":2.856297,"m_value":0.132275},{"m_time":2.913806,"m_value":0.097884},{"m_time":3.099114,"m_value":0.137566},{"m_time":3.163013,"m_value":0.095238},{"m_time":3.322762,"m_value":0.121693},{"m_time":3.437780,"m_value":0.076720},{"m_time":3.565579,"m_value":0.071429},{"m_time":3.699767,"m_value":0.100529},{"m_time":3.731717,"m_value":0.055556},{"m_time":3.885075,"m_value":0.084656},{"m_time":4.044823,"m_value":0.063492},{"m_time":4.191792,"m_value":0.079365},{"m_time":4.319590,"m_value":0.055556},{"m_time":4.485728,"m_value":0.076720},{"m_time":4.530458,"m_value":0.047619},{"m_time":4.754105,"m_value":0.047619},{"m_time":4.901073,"m_value":0.066138},{"m_time":4.952193,"m_value":0.023810},{"m_time":5.143891,"m_value":0.047619},{"m_time":5.284469,"m_value":0.015873},{"m_time":6.225000,"m_value":0.000339,"m_inSlope":-0.000631,"m_outSlope":-0.000631},{"m_time":14.287875,"m_value":0.000000,"m_inSlope":-0.000042,"m_outSlope":-0.000042}]},"m_frequencyModulation":{"m_extrapolationStrategy":0,"m_keyframes":[{"m_time":0.000000,"m_value":94.232804},{"m_time":0.255597,"m_value":474.259259},{"m_time":0.175000,"m_value":433.593750},{"m_time":0.425000,"m_value":433.593750},{"m_time":0.475000,"m_value":421.875000},{"m_time":0.625000,"m_value":386.718750},{"m_time":0.725000,"m_value":457.031250},{"m_time":0.775000,"m_value":421.875000},{"m_time":0.825000,"m_value":457.031250},{"m_time":0.875000,"m_value":421.875000},{"m_time":0.975000,"m_value":457.031250},{"m_time":1.025000,"m_value":410.156250},{"m_time":1.125000,"m_value":574.218750},{"m_time":1.175000,"m_value":410.156250},{"m_time":1.225000,"m_value":445.312500},{"m_time":1.425000,"m_value":410.156250},{"m_time":1.575000,"m_value":433.593750},{"m_time":1.625000,"m_value":304.687500},{"m_time":1.675000,"m_value":445.312500},{"m_time":1.775000,"m_value":304.687500},{"m_time":1.825000,"m_value":445.312500},{"m_time":2.025000,"m_value":445.312500},{"m_time":2.075000,"m_value":304.687500},{"m_time":2.125000,"m_value":445.312500},{"m_time":2.275000,"m_value":304.687500},{"m_time":2.325000,"m_value":410.156250},{"m_time":2.475000,"m_value":304.687500},{"m_time":2.525000,"m_value":433.593750},{"m_time":2.675000,"m_value":445.312500},{"m_time":2.725000,"m_value":292.968750},{"m_time":2.825000,"m_value":574.218750},{"m_time":2.875000,"m_value":433.593750},{"m_time":2.975000,"m_value":398.437500},{"m_time":3.175000,"m_value":433.593750},{"m_time":3.225000,"m_value":304.687500},{"m_time":3.375000,"m_value":445.312500},{"m_time":3.425000,"m_value":433.593750},{"m_time":3.825000,"m_value":433.593750},{"m_time":3.925000,"m_value":304.687500},{"m_time":3.975000,"m_value":433.593750},{"m_time":4.175000,"m_value":433.593750},{"m_time":4.225000,"m_value":445.312500},{"m_time":4.275000,"m_value":304.687500},{"m_time":4.325000,"m_value":433.593750},{"m_time":4.725000,"m_value":433.593750},{"m_time":4.775000,"m_value":304.687500},{"m_time":4.825000,"m_value":433.593750},{"m_time":14.287875,"m_value":433.593750}]}}}]},{"m_mute":0,"m_gain":1.000000,"m_notes":[]}]},"m_gain":1.000000}
+{
+    "m_HDFlag": 0,
+    "m_description": "",
+    "m_gain": 1.0,
+    "m_length_unit": 7,
+    "m_stiffness": {
+        "m_gain": 1.0,
+        "m_loop": 0,
+        "m_maximum": 1.0,
+        "m_melodies": [],
+        "m_signalEvaluationMethod": 3
+    },
+    "m_texture": {
+        "m_gain": 1.0,
+        "m_loop": 0,
+        "m_maximum": 1.0,
+        "m_melodies": [],
+        "m_signalEvaluationMethod": 3
+    },
+    "m_time_unit": 0,
+    "m_version": "5",
+    "m_vibration": {
+        "m_gain": 1.0,
+        "m_loop": 0,
+        "m_maximum": 1.0,
+        "m_melodies": [
+            {
+                "m_gain": 1.0,
+                "m_mute": 0,
+                "m_notes": [
+                    {
+                        "m_gain": 0.5567573214386236,
+                        "m_hapticEffect": {
+                            "m_type": 0
+                        },
+                        "m_length": 0.022,
+                        "m_priority": 0,
+                        "m_startingPoint": 0.5128217547054207
+                    }
+                ]
+            },
+            {
+                "m_gain": 1.0,
+                "m_mute": 0,
+                "m_notes": [
+                    {
+                        "m_gain": 1.0,
+                        "m_hapticEffect": {
+                            "m_amplitudeModulation": {
+                                "m_extrapolationStrategy": 0,
+                                "m_keyframes": [
+                                    {
+                                        "m_time": 0.0,
+                                        "m_value": 0.002244
+                                    },
+                                    {
+                                        "m_inSlope": 0.59336,
+                                        "m_outSlope": 0.59336,
+                                        "m_time": 0.025,
+                                        "m_value": 0.002244
+                                    },
+                                    {
+                                        "m_time": 0.178918,
+                                        "m_value": 0.314815
+                                    },
+                                    {
+                                        "m_time": 0.370616,
+                                        "m_value": 0.833333
+                                    },
+                                    {
+                                        "m_time": 0.677332,
+                                        "m_value": 0.558201
+                                    },
+                                    {
+                                        "m_time": 0.86903,
+                                        "m_value": 0.375661
+                                    },
+                                    {
+                                        "m_time": 0.958489,
+                                        "m_value": 0.616402
+                                    },
+                                    {
+                                        "m_time": 1.067118,
+                                        "m_value": 0.338624
+                                    },
+                                    {
+                                        "m_time": 1.226866,
+                                        "m_value": 0.502646
+                                    },
+                                    {
+                                        "m_time": 1.341885,
+                                        "m_value": 0.291005
+                                    },
+                                    {
+                                        "m_time": 1.399394,
+                                        "m_value": 0.428571
+                                    },
+                                    {
+                                        "m_time": 1.533582,
+                                        "m_value": 0.261905
+                                    },
+                                    {
+                                        "m_time": 1.648601,
+                                        "m_value": 0.359788
+                                    },
+                                    {
+                                        "m_time": 1.654991,
+                                        "m_value": 0.203704
+                                    },
+                                    {
+                                        "m_time": 1.859469,
+                                        "m_value": 0.365079
+                                    },
+                                    {
+                                        "m_time": 1.885028,
+                                        "m_value": 0.222222
+                                    },
+                                    {
+                                        "m_time": 2.038386,
+                                        "m_value": 0.304233
+                                    },
+                                    {
+                                        "m_time": 2.063946,
+                                        "m_value": 0.153439
+                                    },
+                                    {
+                                        "m_time": 2.134235,
+                                        "m_value": 0.206349
+                                    },
+                                    {
+                                        "m_time": 2.198135,
+                                        "m_value": 0.140212
+                                    },
+                                    {
+                                        "m_time": 2.319543,
+                                        "m_value": 0.206349
+                                    },
+                                    {
+                                        "m_time": 2.370663,
+                                        "m_value": 0.111111
+                                    },
+                                    {
+                                        "m_time": 2.498461,
+                                        "m_value": 0.169312
+                                    },
+                                    {
+                                        "m_time": 2.543191,
+                                        "m_value": 0.121693
+                                    },
+                                    {
+                                        "m_time": 2.670989,
+                                        "m_value": 0.145503
+                                    },
+                                    {
+                                        "m_time": 2.728498,
+                                        "m_value": 0.103175
+                                    },
+                                    {
+                                        "m_time": 2.856297,
+                                        "m_value": 0.132275
+                                    },
+                                    {
+                                        "m_time": 2.913806,
+                                        "m_value": 0.097884
+                                    },
+                                    {
+                                        "m_time": 3.099114,
+                                        "m_value": 0.137566
+                                    },
+                                    {
+                                        "m_time": 3.163013,
+                                        "m_value": 0.095238
+                                    },
+                                    {
+                                        "m_time": 3.322762,
+                                        "m_value": 0.121693
+                                    },
+                                    {
+                                        "m_time": 3.43778,
+                                        "m_value": 0.07672
+                                    },
+                                    {
+                                        "m_time": 3.565579,
+                                        "m_value": 0.071429
+                                    },
+                                    {
+                                        "m_time": 3.699767,
+                                        "m_value": 0.100529
+                                    },
+                                    {
+                                        "m_time": 3.731717,
+                                        "m_value": 0.055556
+                                    },
+                                    {
+                                        "m_time": 3.885075,
+                                        "m_value": 0.084656
+                                    },
+                                    {
+                                        "m_time": 4.044823,
+                                        "m_value": 0.063492
+                                    },
+                                    {
+                                        "m_time": 4.191792,
+                                        "m_value": 0.079365
+                                    },
+                                    {
+                                        "m_time": 4.31959,
+                                        "m_value": 0.055556
+                                    },
+                                    {
+                                        "m_time": 4.485728,
+                                        "m_value": 0.07672
+                                    },
+                                    {
+                                        "m_time": 4.530458,
+                                        "m_value": 0.047619
+                                    },
+                                    {
+                                        "m_time": 4.754105,
+                                        "m_value": 0.047619
+                                    },
+                                    {
+                                        "m_time": 4.901073,
+                                        "m_value": 0.066138
+                                    },
+                                    {
+                                        "m_time": 4.952193,
+                                        "m_value": 0.02381
+                                    },
+                                    {
+                                        "m_time": 5.143891,
+                                        "m_value": 0.047619
+                                    },
+                                    {
+                                        "m_time": 5.284469,
+                                        "m_value": 0.015873
+                                    },
+                                    {
+                                        "m_inSlope": -0.000631,
+                                        "m_outSlope": -0.000631,
+                                        "m_time": 6.225,
+                                        "m_value": 0.000339
+                                    },
+                                    {
+                                        "m_inSlope": -4.2e-05,
+                                        "m_outSlope": -4.2e-05,
+                                        "m_time": 14.287875,
+                                        "m_value": 0.0
+                                    }
+                                ]
+                            },
+                            "m_frequencyModulation": {
+                                "m_extrapolationStrategy": 0,
+                                "m_keyframes": [
+                                    {
+                                        "m_time": 0.0,
+                                        "m_value": 94.232804
+                                    },
+                                    {
+                                        "m_time": 0.255597,
+                                        "m_value": 474.259259
+                                    },
+                                    {
+                                        "m_time": 0.175,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 0.425,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 0.475,
+                                        "m_value": 421.875
+                                    },
+                                    {
+                                        "m_time": 0.625,
+                                        "m_value": 386.71875
+                                    },
+                                    {
+                                        "m_time": 0.725,
+                                        "m_value": 457.03125
+                                    },
+                                    {
+                                        "m_time": 0.775,
+                                        "m_value": 421.875
+                                    },
+                                    {
+                                        "m_time": 0.825,
+                                        "m_value": 457.03125
+                                    },
+                                    {
+                                        "m_time": 0.875,
+                                        "m_value": 421.875
+                                    },
+                                    {
+                                        "m_time": 0.975,
+                                        "m_value": 457.03125
+                                    },
+                                    {
+                                        "m_time": 1.025,
+                                        "m_value": 410.15625
+                                    },
+                                    {
+                                        "m_time": 1.125,
+                                        "m_value": 574.21875
+                                    },
+                                    {
+                                        "m_time": 1.175,
+                                        "m_value": 410.15625
+                                    },
+                                    {
+                                        "m_time": 1.225,
+                                        "m_value": 445.3125
+                                    },
+                                    {
+                                        "m_time": 1.425,
+                                        "m_value": 410.15625
+                                    },
+                                    {
+                                        "m_time": 1.575,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 1.625,
+                                        "m_value": 304.6875
+                                    },
+                                    {
+                                        "m_time": 1.675,
+                                        "m_value": 445.3125
+                                    },
+                                    {
+                                        "m_time": 1.775,
+                                        "m_value": 304.6875
+                                    },
+                                    {
+                                        "m_time": 1.825,
+                                        "m_value": 445.3125
+                                    },
+                                    {
+                                        "m_time": 2.025,
+                                        "m_value": 445.3125
+                                    },
+                                    {
+                                        "m_time": 2.075,
+                                        "m_value": 304.6875
+                                    },
+                                    {
+                                        "m_time": 2.125,
+                                        "m_value": 445.3125
+                                    },
+                                    {
+                                        "m_time": 2.275,
+                                        "m_value": 304.6875
+                                    },
+                                    {
+                                        "m_time": 2.325,
+                                        "m_value": 410.15625
+                                    },
+                                    {
+                                        "m_time": 2.475,
+                                        "m_value": 304.6875
+                                    },
+                                    {
+                                        "m_time": 2.525,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 2.675,
+                                        "m_value": 445.3125
+                                    },
+                                    {
+                                        "m_time": 2.725,
+                                        "m_value": 292.96875
+                                    },
+                                    {
+                                        "m_time": 2.825,
+                                        "m_value": 574.21875
+                                    },
+                                    {
+                                        "m_time": 2.875,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 2.975,
+                                        "m_value": 398.4375
+                                    },
+                                    {
+                                        "m_time": 3.175,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 3.225,
+                                        "m_value": 304.6875
+                                    },
+                                    {
+                                        "m_time": 3.375,
+                                        "m_value": 445.3125
+                                    },
+                                    {
+                                        "m_time": 3.425,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 3.825,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 3.925,
+                                        "m_value": 304.6875
+                                    },
+                                    {
+                                        "m_time": 3.975,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 4.175,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 4.225,
+                                        "m_value": 445.3125
+                                    },
+                                    {
+                                        "m_time": 4.275,
+                                        "m_value": 304.6875
+                                    },
+                                    {
+                                        "m_time": 4.325,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 4.725,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 4.775,
+                                        "m_value": 304.6875
+                                    },
+                                    {
+                                        "m_time": 4.825,
+                                        "m_value": 433.59375
+                                    },
+                                    {
+                                        "m_time": 14.287875,
+                                        "m_value": 433.59375
+                                    }
+                                ]
+                            }
+                        },
+                        "m_length": 7.143937,
+                        "m_priority": 1,
+                        "m_startingPoint": 0.0
+                    }
+                ]
+            },
+            {
+                "m_gain": 1.0,
+                "m_mute": 0,
+                "m_notes": [
+                    {
+                        "m_gain": 1.0,
+                        "m_hapticEffect": {
+                            "m_amplitudeModulation": {
+                                "m_extrapolationStrategy": 0,
+                                "m_keyframes": [
+                                    {
+                                        "m_inSlope": 0.0,
+                                        "m_outSlope": 0.0,
+                                        "m_time": 0.0,
+                                        "m_value": 0.0
+                                    },
+                                    {
+                                        "m_inSlope": 0.0,
+                                        "m_outSlope": 0.0,
+                                        "m_time": 1.6915565047648058,
+                                        "m_value": 0.6752475549678991
+                                    }
+                                ]
+                            },
+                            "m_frequencyModulation": {
+                                "m_extrapolationStrategy": 0,
+                                "m_keyframes": [
+                                    {
+                                        "m_inSlope": 0.0,
+                                        "m_outSlope": 0.0,
+                                        "m_time": 0.0,
+                                        "m_value": 65.0
+                                    },
+                                    {
+                                        "m_inSlope": 0.0,
+                                        "m_outSlope": 0.0,
+                                        "m_time": 1.661536653178749,
+                                        "m_value": 246.95050215012955
+                                    }
+                                ]
+                            }
+                        },
+                        "m_length": 1.7055564619567043,
+                        "m_priority": 1,
+                        "m_startingPoint": 0.0
+                    }
+                ]
+            }
+        ],
+        "m_signalEvaluationMethod": 3
+    }
+}

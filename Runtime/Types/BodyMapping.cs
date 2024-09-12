@@ -5,10 +5,21 @@
 
 namespace Interhaptics.HapticBodyMapping
 {
-	/// <summary>
-	/// Enumeration for different types of haptic perceptions.
-	/// </summary>
-	public enum Perception
+    /// <summary>
+    /// Definition of the different protocols supported by the Interhaptics Engine
+    /// </summary>
+    public enum EProtocol
+    {
+        UnknownProtocol = -1,
+        PCM = 0,
+        Clips = 1,
+        RzInterhapticsProtocol = 2
+    }
+
+    /// <summary>
+    /// Enumeration for different types of haptic perceptions.
+    /// </summary>
+    public enum Perception
     {
         None = -1,                      ///< No perception.
 		Stiffness = 0,                  ///< Stiffness perception.
