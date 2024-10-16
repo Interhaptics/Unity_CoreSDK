@@ -1821,6 +1821,12 @@ MonoBehaviour:
   - {fileID: 2032951652}
   - {fileID: 1682686454}
   - {fileID: 1562396058}
+  - {fileID: 273631677}
+  - {fileID: 1437725147}
+  - {fileID: 924613895}
+  - {fileID: 1782716618}
+  - {fileID: 11181743}
+  - {fileID: 1515163731}
 --- !u!1 &418765306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2904,6 +2910,12 @@ MonoBehaviour:
   - {fileID: 2032951652}
   - {fileID: 1682686454}
   - {fileID: 1562396058}
+  - {fileID: 273631677}
+  - {fileID: 1437725147}
+  - {fileID: 924613895}
+  - {fileID: 1782716618}
+  - {fileID: 11181743}
+  - {fileID: 1515163731}
 --- !u!1 &686218272
 GameObject:
   m_ObjectHideFlags: 0
@@ -4897,6 +4909,14 @@ MonoBehaviour:
   hapticBodyParts:
   - {fileID: 2032951652}
   - {fileID: 1125245996}
+  - {fileID: 1562396058}
+  - {fileID: 1682686454}
+  - {fileID: 273631677}
+  - {fileID: 1437725147}
+  - {fileID: 924613895}
+  - {fileID: 1782716618}
+  - {fileID: 11181743}
+  - {fileID: 1515163731}
 --- !u!82 &1312276290
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5103,6 +5123,14 @@ MonoBehaviour:
   hapticBodyParts:
   - {fileID: 2032951652}
   - {fileID: 1125245996}
+  - {fileID: 1562396058}
+  - {fileID: 1682686454}
+  - {fileID: 273631677}
+  - {fileID: 1437725147}
+  - {fileID: 924613895}
+  - {fileID: 1782716618}
+  - {fileID: 11181743}
+  - {fileID: 1515163731}
 --- !u!82 &1384659784
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5264,6 +5292,10 @@ MonoBehaviour:
   - {fileID: 1562396058}
   - {fileID: 1437725147}
   - {fileID: 273631677}
+  - {fileID: 1515163731}
+  - {fileID: 11181743}
+  - {fileID: 1782716618}
+  - {fileID: 924613895}
 --- !u!1 &1420725500
 GameObject:
   m_ObjectHideFlags: 0
@@ -6259,7 +6291,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562396055}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 1.73, z: 0}
+  m_LocalPosition: {x: -1, y: -0.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6517,6 +6549,14 @@ MonoBehaviour:
   hapticBodyParts:
   - {fileID: 2032951652}
   - {fileID: 1125245996}
+  - {fileID: 1562396058}
+  - {fileID: 1682686454}
+  - {fileID: 273631677}
+  - {fileID: 1437725147}
+  - {fileID: 924613895}
+  - {fileID: 1782716618}
+  - {fileID: 11181743}
+  - {fileID: 1515163731}
 --- !u!82 &1609082961
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6863,7 +6903,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682686451}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 1.73, z: 0}
+  m_LocalPosition: {x: 1, y: -0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7220,10 +7260,14 @@ MonoBehaviour:
   hapticBodyParts:
   - {fileID: 2032951652}
   - {fileID: 1125245996}
-  - {fileID: 273631677}
-  - {fileID: 1437725147}
   - {fileID: 1682686454}
   - {fileID: 1562396058}
+  - {fileID: 273631677}
+  - {fileID: 1437725147}
+  - {fileID: 924613895}
+  - {fileID: 1782716618}
+  - {fileID: 11181743}
+  - {fileID: 1515163731}
 --- !u!82 &1819473861
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7993,6 +8037,14 @@ MonoBehaviour:
   hapticBodyParts:
   - {fileID: 2032951652}
   - {fileID: 1125245996}
+  - {fileID: 273631677}
+  - {fileID: 1437725147}
+  - {fileID: 1562396058}
+  - {fileID: 1682686454}
+  - {fileID: 924613895}
+  - {fileID: 1782716618}
+  - {fileID: 11181743}
+  - {fileID: 1515163731}
 --- !u!1 &2032951651
 GameObject:
   m_ObjectHideFlags: 0

@@ -72,6 +72,7 @@ namespace Interhaptics.Samples
             if (stopHapticsExitTriggerCollision)
             {
                 RemoveTarget(other.gameObject);
+                Stop();
             }
         }
 
@@ -80,6 +81,7 @@ namespace Interhaptics.Samples
             if (stopHapticsExitTriggerCollision)
             {
                 RemoveTarget(other.gameObject);
+                Stop();
             }
         }
     }

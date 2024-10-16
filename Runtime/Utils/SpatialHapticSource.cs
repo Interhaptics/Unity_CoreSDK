@@ -96,21 +96,32 @@ namespace Interhaptics
         {
             if ((playMethod == PlayMethod.OnCollision)&&(other.gameObject.GetComponent<HapticBodyPart>() != null))
             {
-                ActivateHaptics(other.gameObject);
+#if ENABLE_METAQUEST && UNITY_ANDROID && !UNITY_EDITOR
+				Core.HAR.PlayHapticEffect(hapticMaterial, SourceIntensity, 1, 0, other.gameObject.GetComponent<HapticBodyPart>().Side);
+#else
+				ActivateHaptics(other.gameObject);
+#endif
             }
-        }
+		}
 
-        protected virtual void OnTriggerEnter(Collider other)
+
+		protected virtual void OnTriggerEnter(Collider other)
         {
             if ((playMethod == PlayMethod.OnTrigger) && (other.gameObject.GetComponent<HapticBodyPart>()!=null))
-            { 
-                ActivateHaptics(other.gameObject);
+            {
+#if ENABLE_METAQUEST && UNITY_ANDROID && !UNITY_EDITOR
+				Core.HAR.PlayHapticEffect(hapticMaterial, SourceIntensity, 1, 0, other.gameObject.GetComponent<HapticBodyPart>().Side);
+                DebugMode("Haptic Triggered on " + hapticMaterial + " with intensity: " + SourceIntensity + " on " + other.gameObject.name);
+#else
+				ActivateHaptics(other.gameObject);
+#endif
             }
         }
 
         private void ActivateHaptics(GameObject other)
         {
             AddTarget(other);
+            
             if (hapticEffectDuration > 0)
             {
                 PlayEventVibration();
@@ -123,13 +134,22 @@ namespace Interhaptics
 
         protected virtual void OnTriggerExit(Collider other)
         {
+#if ENABLE_METAQUEST && UNITY_ANDROID && !UNITY_EDITOR
+			Core.HAR.StopEvent(HapticMaterialId);
+#else
+            Stop();
             RemoveTarget(other.gameObject);
+#endif
         }
 
         protected virtual void OnCollisionExit(Collision other)
         {
+#if ENABLE_METAQUEST && UNITY_ANDROID && !UNITY_EDITOR
+			Core.HAR.StopEvent(HapticMaterialId);
+#else
+			Stop();
             RemoveTarget(other.gameObject);
-        }
-
-    }
+#endif
+		}
+	}
 }

@@ -1,3 +1,18 @@
+#2024.10.15
+# v1.7.2
+
++ Added support for Meta Quest 3
+
+---
+
+#2024.10.01
+# v1.7.1
+
++ Fixed an error that could be thrown when quitting the application
++ Updated Sensa provider to work with Synapse 4
+
+---
+
 #2024.09.12
 # v1.7.0
 

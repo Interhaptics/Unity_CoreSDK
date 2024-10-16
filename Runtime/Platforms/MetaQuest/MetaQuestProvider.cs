@@ -5,7 +5,7 @@
 
 #if ENABLE_METAQUEST && (UNITY_EDITOR || UNITY_ANDROID || UNITY_STANDALONE_WIN)
 using UnityEngine;
-
+using System.Runtime.InteropServices;
 using Interhaptics.HapticBodyMapping;
 
 
@@ -22,20 +22,6 @@ namespace Interhaptics.Platforms.XR
         private const string DESCRIPTION = "XR controller for Meta Quest";
         private const string MANUFACTURER = "Meta";
         private const string VERSION = "1.0";
-        
-        private const int NUMBER_OF_BP = 2;
-        private static readonly Perception[] PERCEPTIONS = { Perception.Vibration, Perception.Vibration };
-        private static readonly BodyPartID[] BODYPARTS = { BodyPartID.Bp_Left_palm, BodyPartID.Bp_Right_palm };
-        private static readonly int[] X_DIM = { 1, 1 };
-        private static readonly int[] Y_DIM = { 1, 1 };
-        private static readonly int[] Z_DIM = { 1, 1 };
-        private static readonly double[] SAMPLERATE = { 500, 500 };
-        private static readonly bool[] HD = { false, false };
-        private static readonly bool[] SPLIT_FREQUENCY = { false, false };
-        private static readonly bool[] SPLIT_TRANSIENTS = { false, false };
-        private static readonly EProtocol[] PROTOCOL = { EProtocol.PCM, EProtocol.PCM };
-
-        private int myAvatarID = -1;
 #endregion
 
 #region HAPTIC CHARACTERISTICS GETTERS
@@ -65,64 +51,48 @@ namespace Interhaptics.Platforms.XR
 #endregion
 
 #region PROVIDER LOOP
+        private static class MetaQuestProviderNative
+        {
+            const string DLL_NAME = "Interhaptics.MetaQuestProvider";
+
+            [DllImport(DLL_NAME)]
+            public static extern bool ProviderInit();
+            [DllImport(DLL_NAME)]
+            public static extern bool ProviderIsPresent();
+            [DllImport(DLL_NAME)]
+            public static extern bool ProviderClean();
+            [DllImport(DLL_NAME)]
+            public static extern void ProviderRenderHaptics();
+        }
+
         [UnityEngine.Scripting.Preserve]
         public bool Init()
         {
-            if (UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.Head) == null)
-            {
-                return false;
-            }
+            bool res = MetaQuestProviderNative.ProviderInit();
 
-            myAvatarID = Core.HAR.CreateBodyParts(2, PERCEPTIONS, BODYPARTS, X_DIM, Y_DIM, Z_DIM, SAMPLERATE, HD, SPLIT_FREQUENCY, SPLIT_TRANSIENTS, PROTOCOL);
-            if (HapticManager.DebugSwitch)
+            if ((res) && (HapticManager.DebugSwitch))
             {
-            UnityEngine.Debug.Log("Meta Quest haptic provider started.");
+                UnityEngine.Debug.Log("MetaQuest haptic provider started.");
             }
-            return true;
+            return res;
         }
 
         [UnityEngine.Scripting.Preserve]
         public bool IsPresent()
         {
-            UnityEngine.XR.HapticCapabilities caps = new UnityEngine.XR.HapticCapabilities();
-            bool isPresent = UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.LeftHand).TryGetHapticCapabilities(out caps);
-            isPresent |= UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.RightHand).TryGetHapticCapabilities(out caps);
-            return isPresent;
+            return MetaQuestProviderNative.ProviderIsPresent();
         }
 
         [UnityEngine.Scripting.Preserve]
         public bool Clean()
         {
-            return true;
+            return MetaQuestProviderNative.ProviderClean();
         }
 
         [UnityEngine.Scripting.Preserve]
         public void RenderHaptics()
         {
-            double[] outputBuffer;
-            int size = Core.HAR.GetOutputBufferSize(myAvatarID, Perception.Vibration, BodyPartID.Bp_Left_palm, 0, 0, 0, BufferDataType.PCM);
-            if (size > 0)
-            {
-                outputBuffer = new double[size];
-                Core.HAR.GetOutputBuffer(outputBuffer, size, myAvatarID, Perception.Vibration, BodyPartID.Bp_Left_palm, 0, 0, 0, BufferDataType.PCM);
-                UnityXRHapticAbstraction.VibrateLeft(Time.realtimeSinceStartup - Time.time, outputBuffer);
-            }
-            else
-            {
-                UnityXRHapticAbstraction.VibrateLeft(Time.realtimeSinceStartup - Time.time, null);
-            }
-
-            size = Core.HAR.GetOutputBufferSize(myAvatarID, Perception.Vibration, BodyPartID.Bp_Right_palm, 0, 0, 0, BufferDataType.PCM);
-            if (size > 0)
-            {
-                outputBuffer = new double[size];
-                Core.HAR.GetOutputBuffer(outputBuffer, size, myAvatarID, Perception.Vibration, BodyPartID.Bp_Right_palm, 0, 0, 0, BufferDataType.PCM);
-                UnityXRHapticAbstraction.VibrateRight(Time.realtimeSinceStartup - Time.time, outputBuffer);
-            }
-            else
-            {
-                UnityXRHapticAbstraction.VibrateRight(Time.realtimeSinceStartup - Time.time, null);
-            }
+            MetaQuestProviderNative.ProviderRenderHaptics();
         }
 #endregion
 
